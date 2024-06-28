@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function ProgressBar() {
+export default function ProgressBar(props) {
+  const { progress, quantityOfQuestions } = props;
+  const [time, setTime] = useState(0);
+
+  const timer = () => {};
+
   return (
-    <div className="w-screen h-2 absolute top-0 left-0 bg-gray-300">
-      <div className="bg-green-400 h-full" style={{ width: "50%" }}></div>
-    </div>
+    <>
+      <div className="font-monts w-screen h-3 absolute top-0 left-0 bg-gray-300">
+        <div
+          className="flex items-center bg-green-400 h-full transition-[width] duration-500"
+          style={{
+            width: `${((progress + 1) / quantityOfQuestions) * 100}%`,
+          }}
+        ></div>
+      </div>
+      <p className="pt-5 text-2xl font-semibold">{`${
+        progress + 1
+      } / ${quantityOfQuestions}`}</p>
+      <p>{time}</p>
+    </>
   );
 }

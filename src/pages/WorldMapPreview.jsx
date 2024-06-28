@@ -44,7 +44,7 @@ export default function Quiz() {
   ];
 
   return (
-    <div className="w-full flex flex-col items-center font-monts bg-default bg-scroll bg-blue-100 bg-opacity-50 pb-20 relative">
+    <div className="w-full flex flex-col items-center font-monts bg-default min-h-screen bg-blue-100 bg-opacity-5 pb-20 relative">
       <NavLink
         to={"/"}
         className="absolute left-5 top-5 flex justify-center items-center gap-2 transition-colors hover:text-red-700"

@@ -11,7 +11,7 @@ module.exports = {
       },
       backgroundImage: {
         default:
-          "url('https://www.transparenttextures.com/patterns/black-thread-light.png')",
+          "url('https://www.transparenttextures.com/patterns/grid-me.png')",
       },
     },
   },

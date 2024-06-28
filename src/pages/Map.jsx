@@ -95,6 +95,8 @@ export default function Map() {
                         `https://restcountries.com/v3.1/name/${geo.properties.admin}`
                       );
 
+                      console.log(response);
+
                       setCountryData(response.data);
 
                       let countryName = "";

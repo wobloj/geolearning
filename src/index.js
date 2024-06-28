@@ -7,12 +7,24 @@ import HomePage from "./pages/HomePage";
 import WorldMapPreview from "./pages/WorldMapPreview";
 import Quiz from "./pages/Quiz";
 import Map from "./pages/Map";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
+    errorElement: <div>404 Not Found</div>,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+    errorElement: <div>404 Not Found</div>,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
     errorElement: <div>404 Not Found</div>,
   },
   {

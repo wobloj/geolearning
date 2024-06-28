@@ -7,7 +7,7 @@ export default function Level({ color, levelTitle }) {
       <h1 className={`text-4xl py-5 font-bold text-${color}`}>{levelTitle}</h1>
       <Link to={"/map"}>
         <div
-          className={`flex items-center justify-center rounded-full ${color} antialiased size-28 text-white font-semibold text-4xl shadow-[inset_0px_0px_10px_10px_#00000024] my-3 cursor-pointer transition-all `}
+          className={`flex items-center justify-center rounded-full ${color} antialiased size-28 text-white font-semibold text-4xl shadow-[inset_0px_0px_10px_10px_#00000024] my-3 cursor-pointer transition-all hover:shadow-[inset_0px_0px_15px_15px_#00000040]`}
         >
           1
         </div>
@@ -19,7 +19,7 @@ export default function Level({ color, levelTitle }) {
       </div>
       <Link to={"/quiz"}>
         <div
-          className={`flex items-center justify-center rounded-full ${color} antialiased size-28 text-white font-semibold text-4xl shadow-[inset_0px_0px_10px_10px_#00000024] my-3 cursor-pointer transition-all `}
+          className={`flex items-center justify-center rounded-full ${color} antialiased size-28 text-white font-semibold text-4xl shadow-[inset_0px_0px_10px_10px_#00000024] my-3 cursor-pointer transition-all hover:shadow-[inset_0px_0px_15px_15px_#00000040]`}
         >
           2
         </div>
@@ -31,7 +31,7 @@ export default function Level({ color, levelTitle }) {
       </div>
       <Link to={"/map"}>
         <div
-          className={`flex items-center justify-center rounded-full ${color} antialiased size-28 text-white font-semibold text-4xl shadow-[inset_0px_0px_10px_10px_#00000024] my-3 cursor-pointer transition-all `}
+          className={`flex items-center justify-center rounded-full ${color} antialiased size-28 text-white font-semibold text-4xl shadow-[inset_0px_0px_10px_10px_#00000024] my-3 cursor-pointer transition-all hover:shadow-[inset_0px_0px_15px_15px_#00000040]`}
         >
           3
         </div>
