@@ -38,6 +38,7 @@ export default function Map() {
   const focused = () => {
     setSelected(true);
   };
+
   const notFocused = () => {
     setSelected(false);
     setDataLoaded(false);

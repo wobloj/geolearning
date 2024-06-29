@@ -1,10 +1,21 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEarthAmerica } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEarthAmerica,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { Link, NavLink } from "react-router-dom";
 
 export default function LoginPage() {
   return (
     <div className="font-monts bg-default bg-blue-100 bg-opacity-5 h-screen">
+      <NavLink
+        to={"/"}
+        className="absolute left-5 top-5 flex justify-center items-center gap-2 transition-colors hover:text-red-700"
+      >
+        <FontAwesomeIcon icon={faChevronLeft} />
+        Powrót
+      </NavLink>
       <div className="flex flex-col items-center pb-36 pt-24 gap-2">
         <FontAwesomeIcon className="w-10 h-10" icon={faEarthAmerica} />
         <p className="text-4xl font-bold">Logowanie</p>
@@ -30,11 +41,13 @@ export default function LoginPage() {
         >
           Logowanie
         </button>
-        <p className=" text-red-500">error</p>
+        <p className=" text-red-500"></p>
       </div>
-      <div className="flex justify-center items-center flex-col mt-32">
+      <div className="flex justify-center items-center flex-col mt-32 gap-2">
         <p className="text-3xl font-bold">Nie masz konta?</p>
-        <p className="">Zarejestruj się</p>
+        <Link to={"/register"}>
+          <p className=" text-blue-400">Zarejestruj się!</p>
+        </Link>
       </div>
     </div>
   );

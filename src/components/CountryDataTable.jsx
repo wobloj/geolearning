@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function CountryDataTable(props) {
   const { ccn3, countryData, countryName } = props;
+  const [isLoading, setIsLoading] = useState(true);
+  const [correctCountryData, setCorrectCountryData] = useState(null);
 
-  const findCorrectCountryData = (ccn3, countryData) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const data = await findCorrectCountryData(ccn3, countryData);
+      setCorrectCountryData(data);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [ccn3, countryData]);
+
+  const findCorrectCountryData = async (ccn3, countryData) => {
     for (const data of countryData) {
       if (data.ccn3 === ccn3) {
         return {
@@ -21,12 +33,12 @@ export default function CountryDataTable(props) {
     return null;
   };
 
-  const correctCountryData = findCorrectCountryData(ccn3, countryData);
-
   return (
     <div className="w-2/5 border-2 border-black bg-white">
       <p className="text-center text-4xl py-10">Dane</p>
-      {correctCountryData ? (
+      {isLoading ? (
+        <div className="text-center text-lg py-10">Loading...</div>
+      ) : correctCountryData ? (
         <div className="flex flex-col gap-3 text-lg px-8">
           <img
             className="border border-black m-auto mb-8"
@@ -46,11 +58,9 @@ export default function CountryDataTable(props) {
           </p>
           <p>
             Powierzchnia państwa:{" "}
-            <span className="font-bold">{correctCountryData.area}</span>
-          </p>
-          <p>
-            Waluta:{" "}
-            <span className="font-bold">{correctCountryData.currency}</span>
+            <span className="font-bold">
+              {correctCountryData.area} km<sup>2</sup>
+            </span>
           </p>
         </div>
       ) : (
