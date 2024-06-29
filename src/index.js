@@ -11,38 +11,43 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <HomePage />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/login",
+      element: <LoginPage />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/register",
+      element: <RegisterPage />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/quiz",
+      element: <Quiz />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/map",
+      element: <WorldMapPreview />,
+      children: [
+        {
+          path: "/map/:continent",
+          element: <Map />,
+        },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: <HomePage />,
-    errorElement: <div>404 Not Found</div>,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-    errorElement: <div>404 Not Found</div>,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
-    errorElement: <div>404 Not Found</div>,
-  },
-  {
-    path: "/quiz",
-    element: <Quiz />,
-    errorElement: <div>404 Not Found</div>,
-  },
-  {
-    path: "/map",
-    element: <WorldMapPreview />,
-    children: [
-      {
-        path: "/map/:continent",
-        element: <Map />,
-      },
-    ],
-  },
-]);
+    basename: "/geolearning",
+  }
+);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
