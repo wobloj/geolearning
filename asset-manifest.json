@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/geolearning/static/css/main.ded2e538.css",
+    "main.js": "/geolearning/static/js/main.f807b054.js",
+    "static/js/453.e0baffb2.chunk.js": "/geolearning/static/js/453.e0baffb2.chunk.js",
+    "static/media/avatar-default.png": "/geolearning/static/media/avatar-default.934339d98b117001e1d3.png",
+    "index.html": "/geolearning/index.html",
+    "main.ded2e538.css.map": "/geolearning/static/css/main.ded2e538.css.map",
+    "main.f807b054.js.map": "/geolearning/static/js/main.f807b054.js.map",
+    "453.e0baffb2.chunk.js.map": "/geolearning/static/js/453.e0baffb2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ded2e538.css",
+    "static/js/main.f807b054.js"
+  ]
+}
