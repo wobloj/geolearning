@@ -1,4 +1,6 @@
 ﻿# Geolearning
+https://wobloj.github.io/geolearning/
+ 
 ## Użyte pakiety:
 1) react-simple-maps
 2) react-router-dom
