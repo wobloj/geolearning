@@ -1,5 +1,5 @@
 ﻿# Geolearning
-##Użyte pakiety:
+## Użyte pakiety:
 1) react-simple-maps
 2) react-router-dom
 3) react-tooltip
