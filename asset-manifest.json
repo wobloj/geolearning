@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/geolearning/static/css/main.ded2e538.css",
-    "main.js": "/geolearning/static/js/main.ba587973.js",
+    "main.css": "/geolearning/static/css/main.183eb0a2.css",
+    "main.js": "/geolearning/static/js/main.f1dc41de.js",
     "static/js/453.e0baffb2.chunk.js": "/geolearning/static/js/453.e0baffb2.chunk.js",
     "static/media/avatar-default.png": "/geolearning/static/media/avatar-default.934339d98b117001e1d3.png",
     "index.html": "/geolearning/index.html",
-    "main.ded2e538.css.map": "/geolearning/static/css/main.ded2e538.css.map",
-    "main.ba587973.js.map": "/geolearning/static/js/main.ba587973.js.map",
+    "main.183eb0a2.css.map": "/geolearning/static/css/main.183eb0a2.css.map",
+    "main.f1dc41de.js.map": "/geolearning/static/js/main.f1dc41de.js.map",
     "453.e0baffb2.chunk.js.map": "/geolearning/static/js/453.e0baffb2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ded2e538.css",
-    "static/js/main.ba587973.js"
+    "static/css/main.183eb0a2.css",
+    "static/js/main.f1dc41de.js"
   ]
 }
