@@ -31,7 +31,7 @@ export default function Level({ color, levelTitle }) {
         <div className={`size-7 ${color} mr-5 rounded-full`}></div>
         <div className={`size-7 ${color} rounded-full`}></div>
       </div>
-      <Link to={"/map"}>
+      <Link to={"/loading"}>
         <div
           className={`flex items-center justify-center rounded-full ${color} antialiased size-28 text-white font-semibold text-4xl shadow-[inset_0px_0px_10px_10px_#00000024] my-3 cursor-pointer transition-all hover:shadow-[inset_0px_0px_15px_15px_#00000040]`}
         >

@@ -9,6 +9,7 @@ import QuizGuessCountryOnMap from "../components/quizTypes/QuizGuessCountryOnMap
 import QuizGuessFlagClosed from "../components/quizTypes/QuizGuessFlagClosed";
 import QuizGuessFlagOpen from "../components/quizTypes/QuizGuessFlagOpen";
 import StartQuiz from "../components/StartQuiz";
+import Loading from "../components/Loading";
 
 export default function Quiz() {
   const [startQuiz, setStartQuiz] = useState(false);
@@ -24,9 +25,7 @@ export default function Quiz() {
         `https://restcountries.com/v3.1/region/europe?fields=translations,flags`
       )
       .then((data) => {
-        setIsLoading(true);
         setCountryData(data.data);
-        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -64,13 +63,23 @@ export default function Quiz() {
         Math.random() * (countryData.length - 0) + 0
       );
 
-      if (generatedNumbers.includes(generateNumber)) return;
+      if (generatedNumbers.includes(generateNumber)) {
+        i--;
+        continue;
+      }
 
       generatedNumbers.push(generateNumber);
       generatedData.push(countryData[generateNumber]);
     }
     setQuestions(generatedData);
     console.log(generatedData);
+  };
+
+  const handleStartQuiz = async () => {
+    setIsLoading(true);
+    generateQuestions();
+    setIsLoading(false);
+    setStartQuiz(true);
   };
 
   return (
@@ -82,23 +91,7 @@ export default function Quiz() {
         <FontAwesomeIcon icon={faChevronLeft} />
         Powrót
       </NavLink>
-
-      {startQuiz && !isLoading ? (
-        <>
-          {selectedMode === "open" && (
-            <QuizGuessFlagOpen
-              questions={questions}
-              quantityOfQuestions={quantityOfQuestions}
-            />
-          )}
-          {selectedMode === "map" && (
-            <QuizGuessCountryOnMap
-              questions={questions}
-              quantityOfQuestions={quantityOfQuestions}
-            />
-          )}
-        </>
-      ) : (
+      {!startQuiz ? (
         <div className="flex flex-col gap-5 items-center justify-center h-screen">
           <div className="flex justify-start flex-col w-full">
             <label className="font-semibold" htmlFor="quiz">
@@ -131,13 +124,24 @@ export default function Quiz() {
           <button
             className="py-5 px-14 text-xl font-semibold border-2 bg-green-500 border-green-600"
             onClick={() => {
-              generateQuestions();
-              setStartQuiz(true);
+              handleStartQuiz();
             }}
           >
             Start
           </button>
         </div>
+      ) : isLoading ? (
+        <Loading />
+      ) : selectedMode === "open" ? (
+        <QuizGuessFlagOpen
+          questions={questions}
+          quantityOfQuestions={quantityOfQuestions}
+        />
+      ) : (
+        <QuizGuessCountryOnMap
+          questions={questions}
+          quantityOfQuestions={quantityOfQuestions}
+        />
       )}
     </div>
   );

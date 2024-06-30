@@ -10,6 +10,7 @@ import Map from "./pages/Map";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
+import Loading from "./components/Loading";
 
 const router = createBrowserRouter(
   [
@@ -31,6 +32,11 @@ const router = createBrowserRouter(
     {
       path: "/quiz",
       element: <Quiz />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/loading",
+      element: <Loading />,
       errorElement: <div>404 Not Found</div>,
     },
     {
