@@ -1,30 +1,77 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import Navbar from "./Navbar";
+import { UserContext } from "../context/UserContext";
 import avatar from "../assets/avatar-default.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEarthEurope } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
+  const { username, setUsername, isLoggedIn, setIsLoggedIn } =
+    useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        navigate("/");
+        setUsername("");
+        setIsLoggedIn(false);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
   return (
-    <div className="grid grid-cols-3 place-items-center pt-7">
-      <div className="bg-white flex flex-row items-center gap-4 border-2 border-blue-400 rounded-md py-4 px-8 cursor-pointer">
-        <img
-          className="p-1 border-2 border-blue-400 rounded-full w-8 h-8"
-          src={avatar}
-          alt="zdjecie avataru"
-        />
-        <p>Nazwa</p>
+    <>
+      <header className="grid grid-cols-3 place-items-center pt-7">
+        {isLoggedIn ? (
+          <div className="bg-white flex flex-row items-center gap-4 border-2 border-blue-400 rounded-md py-4 px-8 cursor-pointer">
+            <img
+              className="p-1 border-2 border-blue-400 rounded-full w-8 h-8"
+              src={avatar}
+              alt="zdjecie avataru"
+            />
+            <p>{username}</p>
+          </div>
+        ) : (
+          <div></div>
+        )}
+
+        <NavLink to={`/`}>
+          <div className="flex flex-col items-center w-fit">
+            <span>
+              <h1 className="text-6xl mb-1 text-blue-400 font-bold">
+                Ge
+                <FontAwesomeIcon className=" text-5xl" icon={faEarthEurope} />
+                learn
+              </h1>
+            </span>
+            <span className="h-px bg-gray-600 w-full"></span>
+            <p className="text-3xl mt-1 text-blue-900">Ucz się geografii</p>
+          </div>
+        </NavLink>
+        {isLoggedIn ? (
+          <button
+            onClick={handleLogout}
+            className="bg-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer hover:bg-blue-100 transition-colors"
+          >
+            Wylogowanie
+          </button>
+        ) : (
+          <NavLink to={`/login`}>
+            <div className="bg-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer hover:bg-blue-100 transition-colors">
+              Zaloguj się
+            </div>
+          </NavLink>
+        )}
+      </header>
+      <div className="flex flex-col items-center mt-3">
+        <Navbar />
       </div>
-      <NavLink to={`/`}>
-        <div className="flex flex-col items-center w-fit">
-          <h1 className="text-6xl pb-2 text-blue-400 font-bold">Geolearn</h1>
-          <span className="h-px bg-gray-600 w-full"></span>
-          <p className="text-3xl text-blue-900">Ucz się geografii</p>
-        </div>
-      </NavLink>
-      <NavLink to={`/login`}>
-        <div className="bg-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer">
-          Zaloguj się
-        </div>
-      </NavLink>
-    </div>
+    </>
   );
 }

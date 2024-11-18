@@ -52,7 +52,9 @@ export default function Quiz() {
         <FontAwesomeIcon icon={faChevronLeft} />
         Powrót
       </NavLink>
-      <h1 className="text-5xl py-16 font-bold text-blue-400">Mapa świata</h1>
+      <h1 className="text-5xl py-16 font-bold text-blue-400 drop-shadow-md">
+        Mapa świata
+      </h1>
       <nav className="flex gap-10 pb-9">
         {continents.map((continent) => (
           <NavLink

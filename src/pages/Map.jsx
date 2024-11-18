@@ -72,7 +72,7 @@ export default function Map() {
       </Tooltip>
       <ComposableMap
         projection="geoEqualEarth"
-        className="bg-blue-300 border-2 border-black"
+        className=" bg-map bg-orange-200 border-2 border-black"
       >
         <ZoomableGroup
           center={location.state.coordinates}
@@ -83,10 +83,10 @@ export default function Map() {
             {({ geographies }) =>
               geographies.map((geo) => (
                 <Geography
+                  ref={selectedCountry}
                   onFocus={focused}
                   onBlur={notFocused}
-                  ref={selectedCountry}
-                  className="country stroke-[0.03px] stroke-white outline-none fill-green-800 transition-all hover:fill-green-900 hover:outline-none hover:cursor-pointer focus:fill-yellow-700 focus:stroke-[0.1px] focus:stroke-yellow-500"
+                  className="stroke-[0.07px] stroke-black outline-none fill-orange-200 transition-all hover:fill-orange-300 hover:outline-none hover:cursor-pointer focus:fill-yellow-500 focus:stroke-[0.1px] focus:stroke-yellow-800"
                   key={geo.rsmKey}
                   geography={geo}
                   onClick={async () => {
@@ -132,6 +132,7 @@ export default function Map() {
                   onMouseLeave={() => {
                     setCountryTooltip("");
                   }}
+                  // TODO: Podczas przesuwania mapy maja nie znikać podświetlenia oraz tekst ze stolica kraju
                 />
               ))
             }
@@ -142,7 +143,7 @@ export default function Map() {
               <text
                 fill="#000"
                 textAnchor="middle"
-                className="text-[1.5px] -translate-y-[0.5px] select-none"
+                className="text-[4.5px] -translate-y-[0.5px] select-none"
               >
                 {capital}
               </text>

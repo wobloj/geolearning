@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Timer from "./Timer.jsx";
 
 export default function ProgressBar(props) {
   const { progress, quantityOfQuestions, points } = props;
@@ -16,6 +17,7 @@ export default function ProgressBar(props) {
       <p className="pt-5 text-2xl font-semibold">{`${
         progress + 1
       } / ${quantityOfQuestions}`}</p>
+      <Timer />
       <p>{points}</p>
     </>
   );

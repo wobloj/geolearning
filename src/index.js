@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
 
 import "./index.css";
 import HomePage from "./pages/HomePage";
@@ -10,7 +11,6 @@ import Map from "./pages/Map";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
-import Loading from "./components/Loading";
 
 const router = createBrowserRouter(
   [
@@ -30,13 +30,8 @@ const router = createBrowserRouter(
       errorElement: <div>404 Not Found</div>,
     },
     {
-      path: "/quiz",
+      path: "/quiz/:continent",
       element: <Quiz />,
-      errorElement: <div>404 Not Found</div>,
-    },
-    {
-      path: "/loading",
-      element: <Loading />,
       errorElement: <div>404 Not Found</div>,
     },
     {
@@ -58,7 +53,9 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </React.StrictMode>
 );
 
