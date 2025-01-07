@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
+import { AuthProvider } from "./context/AuthProvider";
 
 import "./index.css";
 import HomePage from "./pages/HomePage";
@@ -11,6 +12,7 @@ import Map from "./pages/Map";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter(
   [
@@ -27,6 +29,11 @@ const router = createBrowserRouter(
     {
       path: "/register",
       element: <RegisterPage />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/profile",
+      element: <Profile />,
       errorElement: <div>404 Not Found</div>,
     },
     {
@@ -53,9 +60,11 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
+    <AuthProvider>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

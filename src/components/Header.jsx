@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import { UserContext } from "../context/UserContext";
 import avatar from "../assets/avatar-default.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEarthEurope } from "@fortawesome/free-solid-svg-icons";
+import { faEarthEurope, faUser } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
   const { username, setUsername, isLoggedIn, setIsLoggedIn } =
@@ -22,21 +22,23 @@ export default function Header() {
         setIsLoggedIn(false);
       })
       .catch((error) => {
-        // An error happened.
+        console.log(error);
       });
   };
   return (
     <>
-      <header className="grid grid-cols-3 place-items-center pt-7">
+      <header className="grid grid-cols-3 place-items-center pt-7 font-monts">
         {isLoggedIn ? (
-          <div className="bg-white flex flex-row items-center gap-4 border-2 border-blue-400 rounded-md py-4 px-8 cursor-pointer">
-            <img
-              className="p-1 border-2 border-blue-400 rounded-full w-8 h-8"
-              src={avatar}
-              alt="zdjecie avataru"
-            />
-            <p>{username}</p>
-          </div>
+          <NavLink to="/profile">
+            <div className="bg-white flex flex-row items-center gap-4 border-2 border-blue-400 rounded-md py-4 px-8 cursor-pointer">
+              <img
+                className="p-1 border-2 border-blue-400 rounded-full w-8 h-8"
+                src={avatar}
+                alt="zdjecie avataru"
+              />
+              <p>{username}</p>
+            </div>
+          </NavLink>
         ) : (
           <div></div>
         )}
@@ -63,7 +65,8 @@ export default function Header() {
           </button>
         ) : (
           <NavLink to={`/login`}>
-            <div className="bg-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer hover:bg-blue-100 transition-colors">
+            <div className="flex gap-2 items-center bg-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer hover:bg-blue-100 transition-colors">
+              <FontAwesomeIcon icon={faUser} />
               Zaloguj się
             </div>
           </NavLink>

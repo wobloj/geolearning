@@ -7,14 +7,18 @@ export default function QuizStatistic({
   questionQuantity,
   time,
   setStartQuiz,
+  quizType,
+  region,
 }) {
-  const navigate = useNavigate();
-  //TODO: Podczas wyświetlania blędnych odpowiedzi poprawic poprawną odpowiedź by była taka jaką użytkownik wpisał
   return (
     <>
       <div className="flex flex-col justify-center h-full font-monts">
         <div className=" border-2 rounded bg-white border-blue-500 p-6">
           <div className="text-4xl text-center my-5">Wyniki</div>
+          <div className="text-center">
+            <p className="font-semibold text-xl">{region}</p>
+            <p className="font-medium text-l">{quizType}</p>
+          </div>
           <div className="my-4">
             <p className="font-semibold">
               Poprawne odpowiedzi:{" "}

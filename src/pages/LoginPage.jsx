@@ -13,13 +13,18 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const context = useContext(UserContext);
 
-  const onLogin = (e) => {
+  const onLogin = async (e) => {
     e.preventDefault();
-    loginUser(email, password, context);
-    navigate("/");
+    try {
+      await loginUser(email, password, context);
+      navigate("/");
+    } catch (err) {
+      setError(err.message); // Wyświetlenie błędu
+    }
   };
   // TODO: Wyświetlać ma się powiadomienie jeżeli wpisane zostało błędne email lub hasło
   // TODO: Dodać opcję resetu hasła
@@ -38,7 +43,7 @@ export default function LoginPage() {
       </div>
       <form className="flex flex-col items-center gap-10">
         <input
-          className=" text-center border-2 border-blue-400 w-80 h-10 transition-colors focus:outline-none focus:border-blue-600"
+          className=" text-center border-2 rounded-md border-blue-400 w-80 h-10 transition-colors focus:outline-none focus:border-blue-600"
           placeholder="address@email.com"
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -47,7 +52,7 @@ export default function LoginPage() {
           id="email"
         />
         <input
-          className="text-center border-2 border-blue-400 w-80 h-10 transition-colors focus:outline-none focus:border-blue-600 before:content-['hasło']"
+          className="text-center border-2 rounded-md border-blue-400 w-80 h-10 transition-colors focus:outline-none focus:border-blue-600 before:content-['hasło']"
           placeholder="hasło"
           onChange={(e) => setPassword(e.target.value)}
           required

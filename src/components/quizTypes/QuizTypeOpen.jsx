@@ -3,7 +3,8 @@ import ProgressBar from "../ProgressBar.jsx";
 import QuizStatistic from "../QuizStatistic.jsx";
 
 export default function QuizTypeOpen(props) {
-  const { quantityOfQuestions, questions, quizType, setStartQuiz } = props;
+  const { quantityOfQuestions, questions, quizType, setStartQuiz, region } =
+    props;
 
   const [isAnswered, setIsAnswered] = useState(false);
   const [answerState, setAnswerState] = useState(null);
@@ -174,6 +175,8 @@ export default function QuizTypeOpen(props) {
           points={points}
           questionQuantity={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
+          quizType={quizType}
+          region={region}
         />
       )}
     </>

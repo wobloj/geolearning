@@ -13,8 +13,9 @@ import {
 import QuizTypeMap from "../components/quizTypes/QuizTypeMap";
 import QuizTypeClosed from "../components/quizTypes/QuizTypeClosed";
 import QuizTypeOpen from "../components/quizTypes/QuizTypeOpen";
-import StartQuiz from "../components/StartQuiz";
 import Loading from "../components/Loading";
+
+import { getCountryByRegion } from "../api/restcountries";
 
 export default function Quiz() {
   const [startQuiz, setStartQuiz] = useState(false);
@@ -26,7 +27,7 @@ export default function Quiz() {
   const [quantityOfQuestions, setQuantityOfQuestions] = useState(5);
 
   const [region, setRegion] = useState("");
-  const [quizType, setQuizType] = useState("");
+  const [quizTypeText, setQuizTypeText] = useState("");
 
   const location = useLocation();
 
@@ -61,22 +62,37 @@ export default function Quiz() {
         break;
     }
     switch (quizTypeState) {
-      case "Wybór państwa na podstawie flagi":
-        setQuizType("flags");
+      case "flags":
+        setQuizTypeText(
+          <p className="font-medium text-xl">
+            Wybór państwa na podstawie{" "}
+            <span className="font-bold text-blue-600">flagi</span>
+          </p>
+        );
         setIcon(<FontAwesomeIcon className="text-[48px]" icon={faFlagUsa} />);
         break;
-      case "Wybór państwa na podstawie nazwy kraju":
-        setQuizType("country");
+      case "country":
+        setQuizTypeText(
+          <p className="font-medium text-xl">
+            Wybór państwa na podstawie{" "}
+            <span className="font-bold text-blue-600">nazwy państwa</span>
+          </p>
+        );
         setIcon(
           <FontAwesomeIcon className="text-[48px]" icon={faLocationDot} />
         );
         break;
-      case "Wybór państwa na podstawie stolicy kraju":
-        setQuizType("capital");
+      case "capital":
+        setQuizTypeText(
+          <p className="font-medium text-xl">
+            Wybór państwa na podstawie{" "}
+            <span className="font-bold text-blue-600">stolicy kraju</span>
+          </p>
+        );
         setIcon(<FontAwesomeIcon className="text-[48px]" icon={faMapPin} />);
         break;
       default:
-        setQuizType("");
+        setQuizTypeText("");
         break;
     }
   };
@@ -166,12 +182,10 @@ export default function Quiz() {
 
       {!startQuiz ? (
         <div className="flex flex-col gap-5 items-center justify-center h-screen">
-          <h1 className="text-4xl font-semibold text-blue-800">
+          <h1 className="text-4xl font-semibold text-blue-800 my-6">
             {levelTitleState}
           </h1>
-          <p className=" text-xl font-medium">
-            {quizTypeState.charAt(0).toUpperCase() + quizTypeState.slice(1)}
-          </p>
+          {quizTypeText}
           <p className="mb-10">{icon}</p>
           <div className="flex justify-start flex-col w-full items-center  max-w-64">
             <label className="font-semibold" htmlFor="quiz">
@@ -219,14 +233,15 @@ export default function Quiz() {
         <Loading />
       ) : selectedMode === "open" ? (
         <QuizTypeOpen
-          quizType={quizType}
+          quizType={quizTypeState}
+          region={region}
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
         />
       ) : selectedMode === "map" ? (
         <QuizTypeMap
-          quizType={quizType}
+          quizType={quizTypeState}
           region={region}
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}
@@ -234,7 +249,7 @@ export default function Quiz() {
         />
       ) : (
         <QuizTypeClosed
-          quizType={quizType}
+          quizType={quizTypeState}
           region={region}
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}

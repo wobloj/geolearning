@@ -82,58 +82,60 @@ export default function Map() {
           <Geographies geography={changeContinent()}>
             {({ geographies }) =>
               geographies.map((geo) => (
-                <Geography
-                  ref={selectedCountry}
-                  onFocus={focused}
-                  onBlur={notFocused}
-                  className="stroke-[0.07px] stroke-black outline-none fill-orange-200 transition-all hover:fill-orange-300 hover:outline-none hover:cursor-pointer focus:fill-yellow-500 focus:stroke-[0.1px] focus:stroke-yellow-800"
-                  key={geo.rsmKey}
-                  geography={geo}
-                  onClick={async () => {
-                    try {
-                      setDataLoaded(false);
-                      const response = await axios.get(
-                        `https://restcountries.com/v3.1/name/${geo.properties.admin}`
-                      );
+                <a>
+                  <Geography
+                    ref={selectedCountry}
+                    onFocus={focused}
+                    onBlur={notFocused}
+                    className="country stroke-[0.07px] stroke-black outline-none fill-orange-200 transition-all hover:fill-orange-300 hover:outline-none hover:cursor-pointer focus:fill-yellow-500 focus:stroke-[0.1px] focus:stroke-yellow-800"
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onClick={async () => {
+                      try {
+                        setDataLoaded(false);
+                        const response = await axios.get(
+                          `https://restcountries.com/v3.1/name/${geo.properties.admin}`
+                        );
 
-                      console.log(response);
+                        console.log(response);
 
-                      setCountryData(response.data);
+                        setCountryData(response.data);
 
-                      let countryName = "";
-                      let countryCapital = "";
-                      let countryCoordinates = [];
-                      let countryCcn3 = "";
+                        let countryName = "";
+                        let countryCapital = "";
+                        let countryCoordinates = [];
+                        let countryCcn3 = "";
 
-                      for (const country of response.data) {
-                        if (country.ccn3 === geo.properties.iso_n3_eh) {
-                          countryName = geo.properties.name_pl;
-                          countryCapital = country.capital;
-                          countryCoordinates =
-                            country.capitalInfo.latlng.reverse();
-                          countryCcn3 = geo.properties.iso_n3_eh;
-                          break;
+                        for (const country of response.data) {
+                          if (country.ccn3 === geo.properties.iso_n3_eh) {
+                            countryName = geo.properties.name_pl;
+                            countryCapital = country.capital;
+                            countryCoordinates =
+                              country.capitalInfo.latlng.reverse();
+                            countryCcn3 = geo.properties.iso_n3_eh;
+                            break;
+                          }
                         }
+
+                        setCountry(countryName);
+                        setCapital(countryCapital);
+                        setCapitalCoordinates(countryCoordinates);
+                        setCountryCcn3(countryCcn3);
+
+                        setDataLoaded(true);
+                      } catch (error) {
+                        console.log(error);
                       }
-
-                      setCountry(countryName);
-                      setCapital(countryCapital);
-                      setCapitalCoordinates(countryCoordinates);
-                      setCountryCcn3(countryCcn3);
-
-                      setDataLoaded(true);
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  }}
-                  onMouseEnter={() => {
-                    setCountryTooltip(geo.properties.name_pl);
-                  }}
-                  onMouseLeave={() => {
-                    setCountryTooltip("");
-                  }}
-                  // TODO: Podczas przesuwania mapy maja nie znikać podświetlenia oraz tekst ze stolica kraju
-                />
+                    }}
+                    onMouseEnter={() => {
+                      setCountryTooltip(geo.properties.name_pl);
+                    }}
+                    onMouseLeave={() => {
+                      setCountryTooltip("");
+                    }}
+                    // TODO: Podczas przesuwania mapy maja nie znikać podświetlenia oraz tekst ze stolica kraju
+                  />
+                </a>
               ))
             }
           </Geographies>
