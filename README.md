@@ -13,3 +13,4 @@ https://wobloj.github.io/geolearning/
 4) Wybór awatara z kilku dostępnych na stronie
 5) Możliwość zmiany hasła, przypomnienie hasła
 6) Możliwość zapisywania państw do "do nauki"
+7) Odświeżanie strony nie moze wylogowywać użytkownika
