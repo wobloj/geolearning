@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/geolearning/static/css/main.183eb0a2.css",
-    "main.js": "/geolearning/static/js/main.f1dc41de.js",
-    "static/js/453.e0baffb2.chunk.js": "/geolearning/static/js/453.e0baffb2.chunk.js",
+    "main.css": "/geolearning/static/css/main.d4e097eb.css",
+    "main.js": "/geolearning/static/js/main.75557e7b.js",
+    "static/js/845.280b10e7.chunk.js": "/geolearning/static/js/845.280b10e7.chunk.js",
+    "static/media/flag.png": "/geolearning/static/media/flag.58071c5e73fe837c4340.png",
     "static/media/avatar-default.png": "/geolearning/static/media/avatar-default.934339d98b117001e1d3.png",
     "index.html": "/geolearning/index.html",
-    "main.183eb0a2.css.map": "/geolearning/static/css/main.183eb0a2.css.map",
-    "main.f1dc41de.js.map": "/geolearning/static/js/main.f1dc41de.js.map",
-    "453.e0baffb2.chunk.js.map": "/geolearning/static/js/453.e0baffb2.chunk.js.map"
+    "main.d4e097eb.css.map": "/geolearning/static/css/main.d4e097eb.css.map",
+    "main.75557e7b.js.map": "/geolearning/static/js/main.75557e7b.js.map",
+    "845.280b10e7.chunk.js.map": "/geolearning/static/js/845.280b10e7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.183eb0a2.css",
-    "static/js/main.f1dc41de.js"
+    "static/css/main.d4e097eb.css",
+    "static/js/main.75557e7b.js"
   ]
 }
