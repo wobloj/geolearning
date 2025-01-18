@@ -15,8 +15,6 @@ import QuizTypeClosed from "../components/quizTypes/QuizTypeClosed";
 import QuizTypeOpen from "../components/quizTypes/QuizTypeOpen";
 import Loading from "../components/Loading";
 
-import { getCountryByRegion } from "../api/restcountries";
-
 export default function Quiz() {
   const [startQuiz, setStartQuiz] = useState(false);
   const [icon, setIcon] = useState("");
@@ -26,6 +24,7 @@ export default function Quiz() {
   const [selectedMode, setSelectedMode] = useState("open");
   const [quantityOfQuestions, setQuantityOfQuestions] = useState(5);
 
+  const [regionApi, setRegionApi] = useState("");
   const [region, setRegion] = useState("");
   const [quizTypeText, setQuizTypeText] = useState("");
 
@@ -37,27 +36,35 @@ export default function Quiz() {
   const setupQuiz = () => {
     switch (levelTitleState) {
       case "Europa":
+        setRegionApi("europe");
         setRegion("europe");
         break;
       case "Ameryka Północna":
-        setRegion("north america");
+        setRegionApi("north america");
+        setRegion("north_america");
         break;
       case "Ameryka Południowa":
-        setRegion("south america");
+        setRegionApi("south america");
+        setRegion("south_america");
         break;
       case "Afryka":
+        setRegionApi("africa");
         setRegion("africa");
         break;
       case "Azja":
+        setRegionApi("asia");
         setRegion("asia");
         break;
       case "Oceania":
+        setRegionApi("oceania");
         setRegion("oceania");
         break;
       case "Świat":
+        setRegionApi("world");
         setRegion("world");
         break;
       default:
+        setRegionApi("world");
         setRegion("world");
         break;
     }
@@ -97,6 +104,11 @@ export default function Quiz() {
     }
   };
 
+  const apiUrl =
+    regionApi === "world"
+      ? "https://restcountries.com/v3.1/all?fields=translations,flags,independent,capital"
+      : `https://restcountries.com/v3.1/region/${regionApi}?fields=translations,flags,independent,capital`;
+
   useEffect(() => {
     setupQuiz();
   }, [levelTitleState]);
@@ -104,20 +116,22 @@ export default function Quiz() {
   useEffect(() => {
     if (region) {
       axios
-        .get(
-          `https://restcountries.com/v3.1/region/${region}?fields=translations,flags,independent,capital`
-        )
+        .get(apiUrl)
         .then((response) => {
-          const independentCountries = response.data.filter(
-            (country) => country.independent === true
-          );
-          setCountryData(independentCountries);
+          if (regionApi !== "north america") {
+            const independentCountries = response.data.filter(
+              (country) => country.independent === true
+            );
+            setCountryData(independentCountries);
+          } else {
+            setCountryData(response.data);
+          }
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, [region]);
+  }, [regionApi]);
 
   const handleDifficultyChange = (e) => {
     const value = e.target.value;
@@ -219,9 +233,7 @@ export default function Quiz() {
           <button
             className="flex items-center justify-center font-medium mt-5 border-2 border-black rounded-[0.7rem] h-12 w-52 select-none transition-colors bg-white cursor-pointer hover:bg-blue-50 hover:border-blue-500 hover:text-blue-500"
             onClick={async () => {
-              const response = await axios.get(
-                `https://restcountries.com/v3.1/region/${region}`
-              );
+              const response = await axios.get(apiUrl);
               console.log(response.data);
               handleStartQuiz();
             }}
@@ -235,6 +247,7 @@ export default function Quiz() {
         <QuizTypeOpen
           quizType={quizTypeState}
           region={region}
+          regionApi={regionApi}
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
@@ -243,6 +256,7 @@ export default function Quiz() {
         <QuizTypeMap
           quizType={quizTypeState}
           region={region}
+          regionApi={regionApi}
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
@@ -251,6 +265,7 @@ export default function Quiz() {
         <QuizTypeClosed
           quizType={quizTypeState}
           region={region}
+          regionApi={regionApi}
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}
           setStartQuiz={setStartQuiz}

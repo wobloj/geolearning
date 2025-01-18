@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import ContinentSVG from "./ContinentSVG";
 
 export default function Level({ color, colorMap, levelTitle, onClick }) {

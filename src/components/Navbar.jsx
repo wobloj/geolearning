@@ -10,10 +10,10 @@ export default function Navbar() {
           <li className="text-2xl cursor-pointer font-semibold text-blue-400 hover:text-blue-600">
             <NavLink to="/map">Mapa świata</NavLink>
           </li>
-          <li className="text-2xl cursor-pointer font-semibold text-blue-400 hover:text-blue-600">
+          <li className="text-2xl cursor-pointer font-semibold text-gray-400">
             Dzienny quiz
           </li>
-          <li className="text-2xl cursor-pointer font-semibold text-blue-400 hover:text-blue-600">
+          <li className="text-2xl cursor-pointer font-semibold text-gray-400">
             Placeholder 3
           </li>
         </ul>

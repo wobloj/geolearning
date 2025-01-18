@@ -6,6 +6,7 @@ import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, useNavigate } from "react-router-dom";
+import PopUp from "../components/PopUp";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -14,49 +15,143 @@ export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const onSubmit = (e) => {
     const points = {
-      Europe: {
-        level1: 0,
-        level2: 0,
-        level3: 0,
+      europe: {
+        flags: {
+          open:0,
+          closed:0,
+          map:0,
+        },
+        country:{
+          open:0,
+          closed:0,
+          map:0,
+        },
+        capital: {
+          open:0,
+          closed:0,
+          map:0,
+        },
       },
-      North_America: {
-        level1: 0,
-        level2: 0,
-        level3: 0,
+      north_america: {
+        flags: {
+          open:0,
+          closed:0,
+          map:0,
+        },
+        country:{
+          open:0,
+          closed:0,
+          map:0,
+        },
+        capital: {
+          open:0,
+          closed:0,
+          map:0,
+        },
       },
-      South_America: {
-        level1: 0,
-        level2: 0,
-        level3: 0,
+      south_america: {
+        flags: {
+          open:0,
+          closed:0,
+          map:0,
+        },
+        country:{
+          open:0,
+          closed:0,
+          map:0,
+        },
+        capital: {
+          open:0,
+          closed:0,
+          map:0,
+        },
       },
-      Africa: {
-        level1: 0,
-        level2: 0,
-        level3: 0,
+      africa: {
+        flags: {
+          open:0,
+          closed:0,
+          map:0,
+        },
+        country:{
+          open:0,
+          closed:0,
+          map:0,
+        },
+        capital: {
+          open:0,
+          closed:0,
+          map:0,
+        },
       },
-      Asia: {
-        level1: 0,
-        level2: 0,
-        level3: 0,
+      asia: {
+        flags: {
+          open:0,
+          closed:0,
+          map:0,
+        },
+        country:{
+          open:0,
+          closed:0,
+          map:0,
+        },
+        capital: {
+          open:0,
+          closed:0,
+          map:0,
+        },
       },
-      Oceania: {
-        level1: 0,
-        level2: 0,
-        level3: 0,
+      oceania: {
+        flags: {
+          open:0,
+          closed:0,
+          map:0,
+        },
+        country:{
+          open:0,
+          closed:0,
+          map:0,
+        },
+        capital: {
+          open:0,
+          closed:0,
+          map:0,
+        },
       },
-      World: {
-        level1: 0,
-        level2: 0,
-        level3: 0,
+      world: {
+        flags: {
+          open:0,
+          closed:0,
+          map:0,
+        },
+        country:{
+          open:0,
+          closed:0,
+          map:0,
+        },
+        capital: {
+          open:0,
+          closed:0,
+          map:0,
+        },
       },
     };
     e.preventDefault();
-    registerUser(email, password, username, points);
-    navigate("/login");
+    try{
+      registerUser(email, password, username, points);
+      navigate("/login");
+    }catch(err){
+      setIsError(true);
+      setError(err.message);
+    }
+    
   };
+  //TODO: Wyświetl komunikaty o błędzie rejestracji(email istnieje, hasła nie są takie same)
+  //TODO: Hasło musi mieć co najmniej 6 znaków
   return (
     <div className="font-monts bg-default bg-blue-100 bg-opacity-5 h-screen">
       <NavLink
@@ -66,13 +161,13 @@ export default function RegisterPage() {
         <FontAwesomeIcon icon={faChevronLeft} />
         Powrót
       </NavLink>
-      <div className="flex flex-col items-center pb-36 pt-24 gap-2">
+      <div className="flex flex-col items-center pb-24 pt-24 gap-2">
         <FontAwesomeIcon className="w-10 h-10" icon={faEarthAmerica} />
         <p className="text-4xl font-bold">Rejestracja</p>
       </div>
       <form className="flex flex-col items-center gap-10">
         <input
-          className=" text-center border-2 border-blue-400 w-80 h-10 focus:outline-none"
+          className="rounded-md text-center border-2 border-blue-400 w-80 h-10 focus:outline-none"
           placeholder="address@email.com"
           type="email"
           onChange={(e) => setEmail(e.target.value)}
@@ -82,7 +177,7 @@ export default function RegisterPage() {
           id="email"
         />
         <input
-          className=" text-center border-2 border-blue-400 w-80 h-10 focus:outline-none"
+          className="rounded-md text-center border-2 border-blue-400 w-80 h-10 focus:outline-none"
           placeholder="nazwa użytkownika"
           type="text"
           onChange={(e) => setUsername(e.target.value)}
@@ -92,7 +187,7 @@ export default function RegisterPage() {
           id="username"
         />
         <input
-          className="text-center border-2 border-blue-400 w-80 h-10 focus:outline-none"
+          className="rounded-md text-center border-2 border-blue-400 w-80 h-10 focus:outline-none"
           placeholder="hasło"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -102,7 +197,7 @@ export default function RegisterPage() {
           id="password"
         />
         <input
-          className="text-center border-2 border-blue-400 w-80 h-10 focus:outline-none"
+          className="rounded-md text-center border-2 border-blue-400 w-80 h-10 focus:outline-none"
           placeholder="powtórz hasło"
           value={repeatPassword}
           onChange={(e) => setRepeatPassword(e.target.value)}
@@ -112,13 +207,16 @@ export default function RegisterPage() {
           id="repeatPassword"
         />
         <button
-          className="py-3 px-8 bg-white border-2 border-blue-400 transition-colors font-medium hover:bg-blue-100"
+          className="rounded-md py-3 px-8 bg-white border-2 border-blue-400 transition-colors font-medium hover:bg-blue-100"
           type="submit"
           onClick={onSubmit}
         >
           Zarejestruj się
         </button>
-        <p className=" text-red-500">{}</p>
+        {isError &&<PopUp>
+          <p className="text-red-500">{error}</p>
+        </PopUp>}
+        
       </form>
     </div>
   );

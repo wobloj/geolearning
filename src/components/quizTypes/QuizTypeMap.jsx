@@ -62,9 +62,9 @@ export default function QuizTypeMap(props) {
   //TODO: Błędną oraz poprawną odpowiedź należy wyróżnić
   //TODO: Jeżeli użytkownik zaznaczy złą odpowiedź zaznacz na mapie jego odpowiedz oraz poprawną odpowiedź
   return (
-    <>
+    <div className="h-screen flex font-monts flex-col">
       {!isFinished ? (
-        <>
+        <div className="flex flex-col items-center justify-center">
           <ProgressBar
             progress={questionIndex}
             quantityOfQuestions={quantityOfQuestions}
@@ -117,15 +117,18 @@ export default function QuizTypeMap(props) {
               </div>
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <QuizStatistic
           quizData={quizData}
           points={points}
+          mode="map"
+          region={region}
+          quizType={quizType}
           questionQuantity={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
         />
       )}
-    </>
+    </div>
   );
 }

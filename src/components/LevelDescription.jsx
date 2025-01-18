@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
 export default function LevelDescription({
@@ -87,20 +87,20 @@ export default function LevelDescription({
             </ul>
           </div>
         )}
-        <div className="flex flex-row gap-2 mt-5">
+        <div className="flex flex-row justify-center gap-2 mt-5">
           <NavLink
             to={`/quiz/${levelName.toLowerCase()}`}
             state={{
               levelTitle: levelName,
               typeQuiz: quizType,
             }}
-            className="flex-1 w-64 border-2 border-green-500 font-medium text-green-500 rounded-lg py-2 px-8 text-center mt-6 transition-colors hover:border-green-700 hover:text-green-700 hover:bg-green-100"
+            className="flex items-center justify-center flex-1 max-w-64 border-2 border-green-500 font-medium text-green-500 rounded-lg py-2 px-8 text-center mt-6 transition-colors hover:border-green-700 hover:text-green-700 hover:bg-green-100"
           >
             Start
           </NavLink>
           <button
             onClick={() => isLeaderboardVisible(true)}
-            className="flex-1 w-64 border-2 border-blue-400 font-medium text-blue-500 rounded-lg py-2 px-8 text-center mt-6 transition-colors hover:border-blue-700 hover:text-blue-700 hover:bg-blue-100"
+            className="flex items-center justify-center flex-1 max-w-64 border-2 border-blue-400 font-medium text-blue-500 rounded-lg py-2 px-8 text-center mt-6 transition-colors hover:border-blue-700 hover:text-blue-700 hover:bg-blue-100"
           >
             Tablica wyników
           </button>

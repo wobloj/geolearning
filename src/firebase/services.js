@@ -8,16 +8,6 @@ import {
 } from "firebase/auth";
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 
-const isSessionValid = (timestamp) => {
-  if (!timestamp) {
-    console.warn("Brak znacznika czasu logowania (timestamp).");
-    return false;
-  }
-  const now = Date.now();
-  const diffInDays = (now - timestamp) / (1000 * 60 * 60 * 24);
-  return diffInDays < 180; // Ważność sesji: 180 dni
-};
-
 const registerUser = async (email, password, username, points) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -31,7 +21,6 @@ const registerUser = async (email, password, username, points) => {
     await setDoc(doc(db, "users", user.uid), {
       username: username,
       points: points,
-      loginTimestamp: Date.now(), // Zapis aktualnego czasu
     });
 
     console.log("Zarejestrowano i zapisano dane użytkownika:", user.uid);
@@ -65,22 +54,6 @@ const loginUser = async (email, password, context) => {
 
       console.log("Dane użytkownika z Firestore:", userData);
 
-      // Jeśli brak loginTimestamp, ustaw go teraz
-      if (!userData.loginTimestamp) {
-        console.warn("Brak znacznika czasu logowania, ustawiam aktualny czas.");
-        await updateDoc(userRef, {
-          loginTimestamp: Date.now(),
-        });
-        userData.loginTimestamp = Date.now(); // Zaktualizuj lokalnie, by uniknąć błędu
-      }
-
-      // Sprawdzenie ważności sesji
-      if (!isSessionValid(userData.loginTimestamp)) {
-        console.warn("Sesja użytkownika wygasła. Wylogowywanie...");
-        await signOut(auth);
-        throw new Error("Sesja użytkownika wygasła. Zaloguj się ponownie.");
-      }
-
       // Zapis danych do kontekstu aplikacji
       setUsername(userData.username);
       setUserUid(user.uid);
@@ -101,8 +74,9 @@ const loginUser = async (email, password, context) => {
   }
 };
 
-const updateUserPoints = async (region, quizType, points) => {
-  const user = auth.currentUser; // Pobierz zalogowanego użytkownika
+const updateUserPoints = async (region, quizType, mode, points, username) => {
+  const user = auth.currentUser;
+  console.log(user) // Pobierz zalogowanego użytkownika
   if (!user) {
     console.warn("Użytkownik nie jest zalogowany.");
     return;
@@ -117,20 +91,68 @@ const updateUserPoints = async (region, quizType, points) => {
       await setDoc(userRef, { points: {} });
     }
 
-    // Konstrukcja ścieżki do zapisania punktów
-    const regionPath = `points.${region}.${quizType}`;
+    // Konstrukcja ścieżki do leaderboarda
+    const leaderboardRef = doc(db, "leaderboard", `${region}_${quizType}_${mode}`);
+    const leaderboardSnapshot = await getDoc(leaderboardRef);
 
-    await updateDoc(userRef, {
-      [regionPath]: points,
-    });
+    if (!leaderboardSnapshot.exists()) {
+      console.warn("Dokument leaderboarda nie istnieje. Tworzę nowy.");
+      await setDoc(leaderboardRef, {});
+    }
 
-    console.log("Punkty zostały zaktualizowane:", region, quizType, points);
+    // Sprawdź obecne punkty użytkownika w leaderboardzie
+    const leaderboardData = leaderboardSnapshot.data() || {};
+    const currentPoints = leaderboardData[user.displayName]?.points || 0;
+
+    if (points > currentPoints) {
+      // Aktualizacja punktów w leaderboardzie
+      await updateDoc(leaderboardRef, {
+        [`${username}`]: { points },
+      });
+      console.log("Punkty zostały zaktualizowane w leaderboardzie:", user.displayName, points);
+    } else {
+      console.log("Nowe punkty nie są większe niż obecne. Aktualizacja nie jest wymagana.");
+    }
   } catch (error) {
     console.error("Błąd podczas aktualizacji punktów:", error);
     throw new Error("Nie udało się zaktualizować punktów.");
   }
 };
 
-const getLeaderboard = async (continent, level) => {};
+const getLeaderboard = async (region, quizType, mode) => {
+  console.log("Rozpoczęto pobieranie tablicy wyników...");
+  try {
+    if (!region || !quizType || !mode) {
+      throw new Error("Nie wszystkie parametry są zdefiniowane.");
+    }
 
-export { registerUser, loginUser, updateUserPoints };
+    const leaderboardRef = doc(db, "leaderboard", `${region}_${quizType}_${mode}`);
+    const leaderboardSnapshot = await getDoc(leaderboardRef);
+
+    if (!leaderboardSnapshot.exists()) {
+      console.warn("Nie znaleziono dokumentu leaderboard dla region:", region, "quizType:", quizType, "mode:", mode);
+      return [];
+    }
+
+    console.log("Pobrano dane leaderboard:", leaderboardSnapshot.data());
+
+    // Konwersja danych do tablicy
+    const leaderboardData = Object.entries(leaderboardSnapshot.data()).map(([username, data]) => ({
+      username,
+      points: data.points,
+    }));
+
+    console.log(leaderboardData)
+
+    // Sortowanie wyników w kolejności malejącej
+    leaderboardData.sort((a, b) => b.points - a.points);
+
+    console.log("Posortowane dane leaderboard:", leaderboardData);
+    return leaderboardData;
+  } catch (error) {
+    console.error("Błąd podczas pobierania tablicy wyników:", error);
+    throw new Error("Nie udało się pobrać tablicy wyników.");
+  }
+};
+
+export { registerUser, loginUser, updateUserPoints, getLeaderboard };

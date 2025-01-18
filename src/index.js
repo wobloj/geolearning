@@ -14,6 +14,7 @@ import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
 import Profile from "./pages/Profile";
 
+
 const router = createBrowserRouter(
   [
     {

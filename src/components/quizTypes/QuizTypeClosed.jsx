@@ -1,10 +1,17 @@
-import { React, useState, useRef, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import ProgressBar from "../ProgressBar";
 import QuizStatistic from "../QuizStatistic";
+import ButtonGreen from "../ButtonGreen";
 
 export default function QuizTypeClosed(props) {
-  const { quantityOfQuestions, questions, region, quizType, setStartQuiz } =
-    props;
+  const {
+    quantityOfQuestions,
+    questions,
+    region,
+    regionApi,
+    quizType,
+    setStartQuiz,
+  } = props;
 
   const [fakeAnswers, setFakeAnswers] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -16,12 +23,15 @@ export default function QuizTypeClosed(props) {
   const [points, setPoints] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
+  const apiUrl =
+    regionApi === "world"
+      ? "https://restcountries.com/v3.1/all?fields=translations,flags,independent,capital"
+      : `https://restcountries.com/v3.1/region/${regionApi}?fields=translations,flags,independent,capital`;
+
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await fetch(
-          `https://restcountries.com/v3.1/region/${region}?fields=translations,flags,independent,capital`
-        );
+        const response = await fetch(apiUrl);
         const data = await response.json();
         setCountries(data);
         console.log(data);
@@ -38,21 +48,18 @@ export default function QuizTypeClosed(props) {
     const correctAnswer = questions[questionIndex];
     const correctCountryName = correctAnswer.translations.pol.common;
 
-    // Filtrujemy kraje, aby usunąć poprawną odpowiedź
     const incorrectAnswers = countries.filter(
       (country) => country.translations.pol.common !== correctCountryName
     );
 
-    // Losujemy trzy unikalne fałszywe odpowiedzi
     const shuffledIncorrectAnswers = incorrectAnswers
       .sort(() => 0.5 - Math.random())
       .slice(0, 3);
 
-    // Dodajemy poprawną odpowiedź do opcji i mieszamy
     const answerOptions = [correctAnswer, ...shuffledIncorrectAnswers];
     const shuffledAnswers = answerOptions.sort(() => 0.5 - Math.random());
 
-    setFakeAnswers(shuffledAnswers); // Ustawienie w stanie dla renderowania
+    setFakeAnswers(shuffledAnswers);
   };
 
   useEffect(() => {
@@ -73,14 +80,14 @@ export default function QuizTypeClosed(props) {
   };
 
   const confirmAndCheckAnswer = (selectedAnswer) => {
-    if (isAnswered) return; // Jeśli już odpowiedziano, nie rób nic
+    if (isAnswered) return;
 
     const correctAnswer = questions[questionIndex];
     const isCorrect =
       selectedAnswer.translations.pol.common ===
       correctAnswer.translations.pol.common;
 
-    setYourAnswer(selectedAnswer); // Zapisz wybraną odpowiedź
+    setYourAnswer(selectedAnswer);
 
     if (isCorrect) {
       console.log("Poprawna odpowiedź");
@@ -98,7 +105,7 @@ export default function QuizTypeClosed(props) {
       ]);
       setAnswerState(false);
     }
-    setIsAnswered(true); // Ustaw stan na odpowiedziano
+    setIsAnswered(true);
   };
 
   return (
@@ -214,18 +221,23 @@ export default function QuizTypeClosed(props) {
           </div>
 
           {isAnswered && (
-            <button
-              className="mt-24 py-4 px-6 border-2 border-green-600 bg-green-500 text-black font-semibold absolute right-12 top-[50%] translate-y-[-100%]"
+            <ButtonGreen
+              className={
+                "absolute right-12 top-[50%] translate-y-[-100%] w-44 h-16"
+              }
               onClick={handleNextQuestion}
             >
-              Następne pytanie
-            </button>
+              Następne
+            </ButtonGreen>
           )}
         </div>
       ) : (
         <QuizStatistic
           quizData={quizData}
+          mode="closed"
           points={points}
+          quizType={quizType}
+          region={region}
           questionQuantity={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
         />

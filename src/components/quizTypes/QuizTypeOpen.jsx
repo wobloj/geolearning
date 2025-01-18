@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import ProgressBar from "../ProgressBar.jsx";
 import QuizStatistic from "../QuizStatistic.jsx";
+import ButtonGreen from "../ButtonGreen.jsx";
 
 export default function QuizTypeOpen(props) {
   const { quantityOfQuestions, questions, quizType, setStartQuiz, region } =
@@ -68,7 +69,7 @@ export default function QuizTypeOpen(props) {
         answer.current.disabled = true;
         setAnswerState(true);
         setIsAnswered(true);
-        setPoints(points + 1);
+        setPoints(points + 100);
         console.log(points);
       } else {
         setQuizData((prevQuizData) => [
@@ -89,16 +90,18 @@ export default function QuizTypeOpen(props) {
   };
 
   return (
-    <>
+    <div className="h-screen flex font-monts flex-col">
       {!isFinished ? (
-        <div className="flex font-monts flex-col items-center">
-          <ProgressBar
-            progress={questionIndex}
-            quantityOfQuestions={quantityOfQuestions}
-            points={points}
-          />
+        <div className="flex flex-col items-center h-full">
+          <div className="flex flex-col justify-center items-center h-[10%]">
+            <ProgressBar
+              progress={questionIndex}
+              quantityOfQuestions={quantityOfQuestions}
+              points={points}
+            />
+          </div>
           {quizType === "flags" ? (
-            <div>
+            <div className="flex flex-col items-center h-[40%]">
               <p className="font-bold text-4xl pt-14 pb-14">Co to za kraj?</p>
               <img
                 className=" relative h-[20rem] border border-black before:content-none before:w-full before:h-full before:bg-flag before:absolute"
@@ -107,7 +110,7 @@ export default function QuizTypeOpen(props) {
               />
             </div>
           ) : quizType === "country" ? (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center h-[40%]">
               <p className="font-bold text-4xl pt-14 pb-14">
                 Jaka jest stolica tego kraju?
               </p>
@@ -116,9 +119,11 @@ export default function QuizTypeOpen(props) {
               </p>
             </div>
           ) : (
-            <div>
-              <p className="font-bold text-4xl pt-14 pb-14">Co to za kraj?</p>
-              <p className="font-semibold text-3xl pt-14 pb-14 text-blue-600">
+            <div className="flex flex-col items-center mb-auto">
+              <p className="font-bold text-4xl pt-14 pb-14">
+                Stolicą jakiego kraju jest...
+              </p>
+              <p className="font-semibold antialiased text-6xl pt-14 pb-14 text-blue-600 text-center">
                 {questions[questionIndex].capital[0]}
               </p>
             </div>
@@ -136,7 +141,7 @@ export default function QuizTypeOpen(props) {
                 }}
                 ref={answer}
                 placeholder="Odpowiedź"
-                className={`py-3 px-3 outline-none border-2 focus:border-blue-400 placeholder:text-gray-300 placeholder:font-thin ${styleOutline}`}
+                className={`py-3 px-3 mb-4 outline-none border-2 focus:border-blue-400 placeholder:text-gray-300 placeholder:font-thin ${styleOutline}`}
                 type="text"
               />
               {!isAnswered ? (
@@ -154,31 +159,30 @@ export default function QuizTypeOpen(props) {
           </div>
 
           {isAnswered ? (
-            <button
-              className="mt-24 py-4 px-6 border-2 border-green-600 bg-green-500 text-black font-semibold"
-              onClick={handleNextQuestion}
-            >
-              Nastepne pytanie
-            </button>
+            <>
+              <ButtonGreen className={"mb-24"} onClick={handleNextQuestion}>
+                Następne pytanie
+              </ButtonGreen>
+            </>
           ) : (
-            <button
-              onClick={confirmAndCheckAnswer}
-              className="mt-24 py-4 px-6 border-2 border-green-600 bg-green-500 text-black font-semibold"
-            >
-              Zatwierdź
-            </button>
+            <>
+              <ButtonGreen className={"mb-24"} onClick={confirmAndCheckAnswer}>
+                Zatwierdź
+              </ButtonGreen>
+            </>
           )}
         </div>
       ) : (
         <QuizStatistic
           quizData={quizData}
           points={points}
+          mode="open"
           questionQuantity={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
           quizType={quizType}
           region={region}
         />
       )}
-    </>
+    </div>
   );
 }
