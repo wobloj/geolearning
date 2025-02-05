@@ -7,5 +7,10 @@ https://wobloj.github.io/geolearning/
 3) react-tooltip
  
 ## To Do:
-1) Poprawienie rozpoczynania quizu by ładował pytania asynchronicznie,
-2) Dodanie systemu logowania, oraz dodanie statystyk na profilu zalogowanego użytkownika
+1) Dodanie timera
+2) Dodanie obliczania punktów na podstawie czasu w jakim quiz został wykonany
+3) Wyświetlanie prawidłowych danych profilu
+4) Wybór awatara z kilku dostępnych na stronie
+5) Możliwość zmiany hasła, przypomnienie hasła
+6) Możliwość zapisywania państw do "do nauki"
+7) Odświeżanie strony nie moze wylogowywać użytkownika
