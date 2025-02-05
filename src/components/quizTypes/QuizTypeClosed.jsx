@@ -11,6 +11,7 @@ export default function QuizTypeClosed(props) {
     regionApi,
     quizType,
     setStartQuiz,
+    isStarted,
   } = props;
 
   const [fakeAnswers, setFakeAnswers] = useState([]);
@@ -22,6 +23,7 @@ export default function QuizTypeClosed(props) {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [points, setPoints] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [time, setTime] = useState(0);
 
   const apiUrl =
     regionApi === "world"
@@ -34,7 +36,6 @@ export default function QuizTypeClosed(props) {
         const response = await fetch(apiUrl);
         const data = await response.json();
         setCountries(data);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching countries:", error);
       }
@@ -90,11 +91,9 @@ export default function QuizTypeClosed(props) {
     setYourAnswer(selectedAnswer);
 
     if (isCorrect) {
-      console.log("Poprawna odpowiedź");
       setAnswerState(true);
       setPoints(points + 100);
     } else {
-      console.log("Błędna odpowiedź");
       setQuizData((prevQuizData) => [
         ...prevQuizData,
         {
@@ -115,7 +114,8 @@ export default function QuizTypeClosed(props) {
           <ProgressBar
             progress={questionIndex}
             quantityOfQuestions={quantityOfQuestions}
-            points={points}
+            isStarted={isStarted}
+            onTimeUpdate={(currentTime) => setTime(currentTime)}
           />
           <div>
             {quizType === "flags" ? (
@@ -139,6 +139,8 @@ export default function QuizTypeClosed(props) {
                         answer.translations.pol.common ===
                           questions[questionIndex].translations.pol.common
                           ? "border-green-400 bg-green-50 text-green-400"
+                          : isAnswered && yourAnswer === answer
+                          ? "border-red-400 bg-red-50 text-red-500"
                           : ""
                       } ${
                         isAnswered
@@ -170,6 +172,8 @@ export default function QuizTypeClosed(props) {
                         answer.translations.pol.common ===
                           questions[questionIndex].translations.pol.common
                           ? "border-green-400 bg-green-50"
+                          : isAnswered && yourAnswer === answer
+                          ? "border-red-400 bg-red-50 text-red-500"
                           : ""
                       } ${
                         isAnswered
@@ -205,6 +209,8 @@ export default function QuizTypeClosed(props) {
                         answer.translations.pol.common ===
                           questions[questionIndex].translations.pol.common
                           ? "border-green-400 bg-green-50 text-green-500"
+                          : isAnswered && yourAnswer === answer
+                          ? "border-red-400 bg-red-50 text-red-500"
                           : ""
                       } ${
                         isAnswered
@@ -240,6 +246,10 @@ export default function QuizTypeClosed(props) {
           region={region}
           questionQuantity={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
+          time={`${String(Math.floor(time / 60)).padStart(2, "0")}:${String(
+            time % 60
+          ).padStart(2, "0")}`}
+          timeNotFormatted={time}
         />
       )}
     </div>

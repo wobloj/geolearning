@@ -11,10 +11,10 @@ export default function Navbar() {
             <NavLink to="/map">Mapa świata</NavLink>
           </li>
           <li className="text-2xl cursor-pointer font-semibold text-gray-400">
-            Dzienny quiz
+            Państwa świata
           </li>
           <li className="text-2xl cursor-pointer font-semibold text-gray-400">
-            Placeholder 3
+            <NavLink to="/loading">Loading test</NavLink>
           </li>
         </ul>
       </nav>

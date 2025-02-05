@@ -4,9 +4,43 @@ import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut,
 } from "firebase/auth";
-import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+
+const loginUser = async (email, password, context) => {
+  const { setUsername, setIsLoggedIn, setUserUid } = context;
+
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+
+      console.log("Dane użytkownika z Firestore:", userData);
+
+      setUsername(userData.username);
+      setUserUid(user.uid);
+      setIsLoggedIn(true);
+
+      console.log("Zalogowano użytkownika:", user.uid);
+    } else {
+      throw new Error("Brak danych użytkownika w bazie.");
+    }
+  } catch (error) {
+    console.error("Błąd logowania:", error);
+    throw new Error(error.message || "Logowanie nie powiodło się.");
+  }
+};
 
 const registerUser = async (email, password, username, points) => {
   try {
@@ -17,7 +51,7 @@ const registerUser = async (email, password, username, points) => {
     );
     const user = userCredential.user;
 
-    // Zapis danych do Firestore, w tym loginTimestamp
+    
     await setDoc(doc(db, "users", user.uid), {
       username: username,
       points: points,
@@ -30,53 +64,9 @@ const registerUser = async (email, password, username, points) => {
   }
 };
 
-const loginUser = async (email, password, context) => {
-  const { setUsername, setIsLoggedIn, setUserUid } = context;
-
-  try {
-    // Ustawienie przetrwania sesji
-    await setPersistence(auth, browserLocalPersistence);
-
-    // Logowanie użytkownika
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    const user = userCredential.user;
-
-    // Pobranie danych użytkownika z Firestore
-    const userRef = doc(db, "users", user.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-
-      console.log("Dane użytkownika z Firestore:", userData);
-
-      // Zapis danych do kontekstu aplikacji
-      setUsername(userData.username);
-      setUserUid(user.uid);
-      setIsLoggedIn(true);
-
-      // Aktualizacja czasu logowania
-      await updateDoc(userRef, {
-        loginTimestamp: Date.now(),
-      });
-
-      console.log("Zalogowano użytkownika:", user.uid);
-    } else {
-      throw new Error("Brak danych użytkownika w bazie.");
-    }
-  } catch (error) {
-    console.error("Błąd logowania:", error);
-    throw new Error(error.message || "Logowanie nie powiodło się.");
-  }
-};
 
 const updateUserPoints = async (region, quizType, mode, points, username) => {
   const user = auth.currentUser;
-  console.log(user) // Pobierz zalogowanego użytkownika
   if (!user) {
     console.warn("Użytkownik nie jest zalogowany.");
     return;
@@ -91,7 +81,6 @@ const updateUserPoints = async (region, quizType, mode, points, username) => {
       await setDoc(userRef, { points: {} });
     }
 
-    // Konstrukcja ścieżki do leaderboarda
     const leaderboardRef = doc(db, "leaderboard", `${region}_${quizType}_${mode}`);
     const leaderboardSnapshot = await getDoc(leaderboardRef);
 
@@ -100,16 +89,14 @@ const updateUserPoints = async (region, quizType, mode, points, username) => {
       await setDoc(leaderboardRef, {});
     }
 
-    // Sprawdź obecne punkty użytkownika w leaderboardzie
     const leaderboardData = leaderboardSnapshot.data() || {};
     const currentPoints = leaderboardData[user.displayName]?.points || 0;
 
     if (points > currentPoints) {
-      // Aktualizacja punktów w leaderboardzie
       await updateDoc(leaderboardRef, {
-        [`${username}`]: { points },
-      });
-      console.log("Punkty zostały zaktualizowane w leaderboardzie:", user.displayName, points);
+      [`${user.uid}`]: { points, username },
+    });
+      console.log("Punkty zostały zaktualizowane w leaderboardzie:", username, points);
     } else {
       console.log("Nowe punkty nie są większe niż obecne. Aktualizacja nie jest wymagana.");
     }
@@ -136,15 +123,14 @@ const getLeaderboard = async (region, quizType, mode) => {
 
     console.log("Pobrano dane leaderboard:", leaderboardSnapshot.data());
 
-    // Konwersja danych do tablicy
-    const leaderboardData = Object.entries(leaderboardSnapshot.data()).map(([username, data]) => ({
-      username,
+    const leaderboardData = Object.entries(leaderboardSnapshot.data()).map(([useruid, data]) => ({
+      useruid,
       points: data.points,
+      username: data.username,
     }));
 
     console.log(leaderboardData)
 
-    // Sortowanie wyników w kolejności malejącej
     leaderboardData.sort((a, b) => b.points - a.points);
 
     console.log("Posortowane dane leaderboard:", leaderboardData);
@@ -155,4 +141,73 @@ const getLeaderboard = async (region, quizType, mode) => {
   }
 };
 
-export { registerUser, loginUser, updateUserPoints, getLeaderboard };
+const addToLearn = async (country) => {
+  const user = auth.currentUser;
+
+  const userRef = doc(db, "users", user.uid);
+  
+  try {
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      // Aktualizacja listy krajów, jeśli dokument użytkownika istnieje
+      if(userDoc.data().countries.includes(country)){
+        return "Kraj jest już na liście nauki";
+      }else{
+        await updateDoc(userRef, {
+        countries: arrayUnion(country)
+      });
+      }
+      
+    } else {
+      // Tworzenie dokumentu użytkownika, jeśli jeszcze nie istnieje
+      await setDoc(userRef, {
+        countries: [country]
+      });
+    }
+
+    console.log(`Dodano ${country} do listy nauki dla użytkownika ${user.uid}`);
+  } catch (error) {
+    console.error("Błąd podczas aktualizacji Firestore:", error);
+  }
+};
+
+const getToLearn = async () => {
+  const user = auth.currentUser;
+  if (!user) {
+    console.warn("Użytkownik nie jest zalogowany.");
+    return;
+  }
+  const userRef = doc(db, "users", user.uid);
+  const userDoc = await getDoc(userRef);
+  
+  if(userDoc.data().countries.length === 0){
+    return "Brak krajów do nauki";
+  }else{
+    return userDoc.data().countries;
+  }
+}
+
+const getUserData = async () =>{
+  let username, email;
+  const user = auth.currentUser;
+  if (!user) {
+    console.warn("Użytkownik nie jest zalogowany.");
+    return;
+  }
+  const userRef = doc(db, "users", user.uid);
+  const userDoc = await getDoc(userRef);
+  if (userDoc.exists()) {
+      const userData = userDoc.data();
+
+      username = userData.username;
+      email = user.email;
+
+      console.log("Zalogowano użytkownika:", user.uid);
+    } else {
+      throw new Error("Brak danych użytkownika w bazie.");
+    }
+  return {username, email};
+}
+
+export { registerUser, loginUser, updateUserPoints, getLeaderboard, getUserData, addToLearn, getToLearn };

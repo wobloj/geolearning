@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
 import Profile from "./pages/Profile";
+import Loading from "./components/Loading";
 
 
 const router = createBrowserRouter(
@@ -30,6 +31,11 @@ const router = createBrowserRouter(
     {
       path: "/register",
       element: <RegisterPage />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/loading",
+      element: <Loading />,
       errorElement: <div>404 Not Found</div>,
     },
     {

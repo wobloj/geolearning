@@ -1,7 +1,9 @@
-import { React, useEffect, useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { React, useEffect, useContext, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
-import { updateUserPoints } from "../firebase/services";
+import { updateUserPoints, addToLearn } from "../firebase/services";
 import { UserContext } from "../context/UserContext.jsx";
 
 import ButtonBlue from "./ButtonBlue.jsx";
@@ -11,26 +13,55 @@ export default function QuizStatistic({
   points,
   questionQuantity,
   time,
+  timeNotFormatted,
   setStartQuiz,
   quizType,
   mode,
   region,
 }) {
-  const { username, setUsername, isLoggedIn, setIsLoggedIn } =
-    useContext(UserContext);
+  const { username, isLoggedIn, userUid } = useContext(UserContext);
+
+  const [calculatedPoints, setCalculatedPoints] = useState(0);
 
   const quantOfQuestionsCorrect = points / 100;
   useEffect(() => {
+    setCalculatedPoints(
+      calculatePoints(
+        quantOfQuestionsCorrect,
+        questionQuantity,
+        timeNotFormatted
+      )
+    );
     const saveQuizResults = async () => {
       try {
-        await updateUserPoints(region, quizType, mode, points, username);
+        await updateUserPoints(
+          region,
+          quizType,
+          mode,
+          calculatedPoints,
+          username
+        );
       } catch (error) {
         console.error("Nie udało się zapisać wyników quizu:", error);
       }
     };
 
     saveQuizResults();
-  }, [region, quizType, mode, points, username]);
+  }, [region, quizType, mode, calculatedPoints, username]);
+
+  const calculatePoints = (
+    quantOfQuestionsCorrect,
+    quantityOfQuestions,
+    time
+  ) => {
+    let points = quantOfQuestionsCorrect * 100;
+    let effectivity = quantityOfQuestions / time;
+    let timeBonus = effectivity * 500;
+    let basePoints = 50;
+
+    return Math.floor(points + timeBonus + basePoints);
+  };
+
   return (
     <>
       <div className="flex flex-col justify-center h-full font-monts w-full items-center">
@@ -68,9 +99,19 @@ export default function QuizStatistic({
               </span>
             </p>
             <p className="font-semibold">
-              Punkty: <span className="font-normal ml-2">{points}</span>
+              Czas: <span className="font-normal ml-2">{time}</span>
             </p>
-            <p className="font-semibold">Czas: {time}</p>
+            <p className="font-semibold">
+              Punkty:{" "}
+              <span className="font-normal ml-2">
+                {calculatePoints(
+                  quantOfQuestionsCorrect,
+                  questionQuantity,
+                  timeNotFormatted
+                )}
+              </span>
+            </p>
+
             {!isLoggedIn && (
               <p className="text-center text-red-400">
                 Ukończ quiz będąc zalogowanym by zapisać swój wynik
@@ -82,16 +123,30 @@ export default function QuizStatistic({
               <p className="my-2 font-semibold">Twoje błędne odpowiedzi:</p>
               {quizData.map((data, index) => (
                 <div
-                  className="my-2 outline-blue-400 py-2 px-3 hover:outline hover:outline-2 hover:rounded-md"
+                  className="flex flex-row items-center justify-between my-2 outline-blue-400 py-2 px-3 hover:outline hover:outline-2 hover:rounded-md group"
                   key={index}
                 >
-                  <p>Numer pytania: {data.numberQuestion}</p>
-                  <p className="text-red-500">
-                    Twoja odpowiedź: {data.yourAnswer}
-                  </p>
-                  <p className="text-green-500">
-                    Poprawna odpowiedź: {data.correctAnswer}
-                  </p>
+                  <div>
+                    <p>Numer pytania: {data.numberQuestion}</p>
+                    <p className="text-red-500">
+                      Twoja odpowiedź: {data.yourAnswer}
+                    </p>
+                    <p className="text-green-500">
+                      Poprawna odpowiedź: {data.correctAnswer}
+                    </p>
+                  </div>
+                  {isLoggedIn && (
+                    <div className="flex flex-col items-center justify-center">
+                      <FontAwesomeIcon
+                        icon={faCirclePlus}
+                        className="text-3xl cursor-pointer text-blue-500 hidden group-hover:block"
+                        onClick={() => addToLearn(data.correctAnswer, userUid)}
+                      />
+                      <p className="text-sm hidden group-hover:block">
+                        Dodaj "do nauki"
+                      </p>
+                    </div>
+                  )}
                 </div>
               ))}
             </>

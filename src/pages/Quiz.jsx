@@ -196,12 +196,12 @@ export default function Quiz() {
 
       {!startQuiz ? (
         <div className="flex flex-col gap-5 items-center justify-center h-screen">
-          <h1 className="text-4xl font-semibold text-blue-800 my-6">
+          <h1 className="text-6xl font-semibold text-blue-800">
             {levelTitleState}
           </h1>
           {quizTypeText}
-          <p className="mb-10">{icon}</p>
-          <div className="flex justify-start flex-col w-full items-center  max-w-64">
+          <p className="mb-20">{icon}</p>
+          <div className="flex justify-start flex-col w-full items-center max-w-64">
             <label className="font-semibold" htmlFor="quiz">
               Typ quizu
             </label>
@@ -251,6 +251,7 @@ export default function Quiz() {
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
+          isStarted={true}
         />
       ) : selectedMode === "map" ? (
         <QuizTypeMap
@@ -260,6 +261,7 @@ export default function Quiz() {
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
+          isStarted={true}
         />
       ) : (
         <QuizTypeClosed
@@ -269,6 +271,7 @@ export default function Quiz() {
           questions={questions}
           quantityOfQuestions={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
+          isStarted={true}
         />
       )}
     </div>

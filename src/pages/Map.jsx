@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 
 import CountryDataTable from "../components/CountryDataTable";
@@ -21,6 +21,7 @@ import africa_geojson from "../geojson/africa.json";
 import oceania_geojson from "../geojson/oceania.json";
 import na_geojson from "../geojson/north_america.json";
 import sa_geojson from "../geojson/south_america.json";
+import Loading from "../components/Loading";
 
 export default function Map() {
   const [countryTooltip, setCountryTooltip] = useState("");
@@ -158,11 +159,13 @@ export default function Map() {
       {countryData === null ? (
         ""
       ) : (
-        <CountryDataTable
-          ccn3={countryCcn3}
-          countryData={countryData}
-          countryName={country}
-        />
+        <Suspense fallback={<Loading />}>
+          <CountryDataTable
+            ccn3={countryCcn3}
+            countryData={countryData}
+            countryName={country}
+          />
+        </Suspense>
       )}
     </>
   );

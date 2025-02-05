@@ -4,8 +4,14 @@ import ProgressBar from "../ProgressBar";
 import QuizStatistic from "../QuizStatistic";
 
 export default function QuizTypeMap(props) {
-  const { quantityOfQuestions, questions, region, quizType, setStartQuiz } =
-    props;
+  const {
+    quantityOfQuestions,
+    questions,
+    region,
+    quizType,
+    setStartQuiz,
+    isStarted,
+  } = props;
 
   const [selectedCountry, setSelectedCountry] = useState("Brak odpowiedzi");
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -15,6 +21,7 @@ export default function QuizTypeMap(props) {
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [points, setPoints] = useState(0);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  const [time, setTime] = useState(0);
 
   function sendSelectedCountry(country) {
     setSelectedCountry(country);
@@ -68,7 +75,8 @@ export default function QuizTypeMap(props) {
           <ProgressBar
             progress={questionIndex}
             quantityOfQuestions={quantityOfQuestions}
-            points={points}
+            isStarted={isStarted}
+            onTimeUpdate={(currentTime) => setTime(currentTime)}
           />
           <div className="flex gap-6 font-monts h-full">
             <Map region={region} sendSelectedCountry={sendSelectedCountry} />
@@ -127,6 +135,10 @@ export default function QuizTypeMap(props) {
           quizType={quizType}
           questionQuantity={quantityOfQuestions}
           setStartQuiz={setStartQuiz}
+          time={`${String(Math.floor(time / 60)).padStart(2, "0")}:${String(
+            time % 60
+          ).padStart(2, "0")}`}
+          timeNotFormatted={time}
         />
       )}
     </div>

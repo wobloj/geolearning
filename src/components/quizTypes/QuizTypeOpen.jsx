@@ -4,14 +4,21 @@ import QuizStatistic from "../QuizStatistic.jsx";
 import ButtonGreen from "../ButtonGreen.jsx";
 
 export default function QuizTypeOpen(props) {
-  const { quantityOfQuestions, questions, quizType, setStartQuiz, region } =
-    props;
+  const {
+    quantityOfQuestions,
+    questions,
+    quizType,
+    setStartQuiz,
+    region,
+    isStarted,
+  } = props;
 
   const [isAnswered, setIsAnswered] = useState(false);
   const [answerState, setAnswerState] = useState(null);
   const [styleOutline, setStyleOutline] = useState("");
   const [quizData, setQuizData] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
+  const [time, setTime] = useState(0);
 
   const [questionIndex, setQuestionIndex] = useState(0);
 
@@ -97,11 +104,12 @@ export default function QuizTypeOpen(props) {
             <ProgressBar
               progress={questionIndex}
               quantityOfQuestions={quantityOfQuestions}
-              points={points}
+              isStarted={isStarted}
+              onTimeUpdate={(currentTime) => setTime(currentTime)}
             />
           </div>
           {quizType === "flags" ? (
-            <div className="flex flex-col items-center h-[40%]">
+            <div className="flex flex-col items-center">
               <p className="font-bold text-4xl pt-14 pb-14">Co to za kraj?</p>
               <img
                 className=" relative h-[20rem] border border-black before:content-none before:w-full before:h-full before:bg-flag before:absolute"
@@ -110,7 +118,7 @@ export default function QuizTypeOpen(props) {
               />
             </div>
           ) : quizType === "country" ? (
-            <div className="flex flex-col items-center h-[40%]">
+            <div className="flex flex-col items-center">
               <p className="font-bold text-4xl pt-14 pb-14">
                 Jaka jest stolica tego kraju?
               </p>
@@ -129,7 +137,7 @@ export default function QuizTypeOpen(props) {
             </div>
           )}
 
-          <div className="flex flex-col gap-5 items-centerfont-semibold text-center font-semibold text-xl mt-20">
+          <div className="flex flex-col gap-5 items-center text-center font-semibold text-xl mt-20">
             <p>Odpowiedź wpisz tutaj</p>
             <div className="relative">
               <input
@@ -181,6 +189,10 @@ export default function QuizTypeOpen(props) {
           setStartQuiz={setStartQuiz}
           quizType={quizType}
           region={region}
+          time={`${String(Math.floor(time / 60)).padStart(2, "0")}:${String(
+            time % 60
+          ).padStart(2, "0")}`}
+          timeNotFormatted={time}
         />
       )}
     </div>
