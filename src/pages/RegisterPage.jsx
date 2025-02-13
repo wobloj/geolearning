@@ -150,7 +150,6 @@ export default function RegisterPage() {
     }
     
   };
-  //TODO: Wyświetl komunikaty o błędzie rejestracji(email istnieje, hasła nie są takie same)
   //TODO: Hasło musi mieć co najmniej 6 znaków
   return (
     <div className="font-monts bg-default bg-blue-100 bg-opacity-5 h-screen">

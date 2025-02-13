@@ -77,7 +77,7 @@ export default function Profile() {
           </div>
         </div>
         <div className="border-2 border-blue-500 px-8 py-4 rounded-md mr-60 h-full w-full bg-white ">
-          <p className="text-center font-semibold text-xl mb-10">
+          <p className="text-center font-semibold text-3xl mb-10">
             {titlePanel}
           </p>
           {profileTab}

@@ -140,7 +140,7 @@ export default function QuizStatistic({
                       <FontAwesomeIcon
                         icon={faCirclePlus}
                         className="text-3xl cursor-pointer text-blue-500 hidden group-hover:block"
-                        onClick={() => addToLearn(data.correctAnswer, userUid)}
+                        onClick={() => addToLearn(data.ccn3, userUid)}
                       />
                       <p className="text-sm hidden group-hover:block">
                         Dodaj "do nauki"

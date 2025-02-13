@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import ButtonBlue from "./ButtonBlue";
+import { NavLink } from "react-router-dom";
 
-export default function CountryDataTable(props) {
-  const { ccn3, countryData, countryName } = props;
+export default function CountryDataTable({ ccn3, countryData, countryName }) {
   const [isLoading, setIsLoading] = useState(true);
   const [correctCountryData, setCorrectCountryData] = useState(null);
 
@@ -27,6 +28,7 @@ export default function CountryDataTable(props) {
             .replace(/\B(?=(\d{3})+(?!\d))/g, " "),
           area: data.area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "),
           currency: data.currencies[0],
+          cca3: data.cca3,
         };
       }
     }
@@ -62,6 +64,13 @@ export default function CountryDataTable(props) {
               {correctCountryData.area} km<sup>2</sup>
             </span>
           </p>
+          <NavLink
+            to={`/country/${correctCountryData.cca3}`}
+            state={{ ccn3: ccn3 }}
+            className="flex justify-center justify-self-end"
+          >
+            <ButtonBlue>Więcej informacji</ButtonBlue>
+          </NavLink>
         </div>
       ) : (
         ""

@@ -27,8 +27,8 @@ export default function QuizTypeClosed(props) {
 
   const apiUrl =
     regionApi === "world"
-      ? "https://restcountries.com/v3.1/all?fields=translations,flags,independent,capital"
-      : `https://restcountries.com/v3.1/region/${regionApi}?fields=translations,flags,independent,capital`;
+      ? "https://restcountries.com/v3.1/all?fields=translations,flags,independent,capital,ccn3"
+      : `https://restcountries.com/v3.1/region/${regionApi}?fields=translations,flags,independent,capital,ccn3`;
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -98,6 +98,7 @@ export default function QuizTypeClosed(props) {
         ...prevQuizData,
         {
           numberQuestion: questionIndex + 1,
+          ccn3: correctAnswer.ccn3,
           correctAnswer: correctAnswer.translations.pol.common,
           yourAnswer: selectedAnswer.translations.pol.common,
         },
@@ -105,6 +106,7 @@ export default function QuizTypeClosed(props) {
       setAnswerState(false);
     }
     setIsAnswered(true);
+    console.log(quizData);
   };
 
   return (

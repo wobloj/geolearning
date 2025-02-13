@@ -64,22 +64,23 @@ export default function LoginPage() {
           id="password"
         />
         <button
-          className="py-3 px-8 bg-white border-2 border-blue-400 rounded-md transition-colors font-medium hover:bg-blue-100"
+          className="py-3 px-8 mb-10 bg-white border-2 border-blue-400 rounded-md transition-colors font-medium hover:bg-blue-100"
           onClick={onLogin}
         >
           Zaloguj
         </button>
-        <Link to={"/reset"}>
+        {/* <Link to={"/reset"}>
           <p className=" text-blue-500 transition-colors hover:text-blue-700 mb-5">
             Zresetuj hasło
           </p>
-        </Link>
+        </Link> */}
       </form>
-      {isError &&
-      <PopUp>
-        <p className="text-red-500">Błędny email lub hasło</p>
-      </PopUp>}
-      
+      {isError && (
+        <PopUp>
+          <p className="text-red-500">Błędny email lub hasło</p>
+        </PopUp>
+      )}
+
       <div className="flex justify-center items-center flex-col gap-2">
         <p className="text-3xl font-medium">Nie masz konta?</p>
         <Link to={"/register"}>

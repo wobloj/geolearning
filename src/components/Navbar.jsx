@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Leaderboard from "./Leaderboard";
 
 export default function Navbar() {
   return (
@@ -10,11 +9,8 @@ export default function Navbar() {
           <li className="text-2xl cursor-pointer font-semibold text-blue-400 hover:text-blue-600">
             <NavLink to="/map">Mapa świata</NavLink>
           </li>
-          <li className="text-2xl cursor-pointer font-semibold text-gray-400">
-            Państwa świata
-          </li>
-          <li className="text-2xl cursor-pointer font-semibold text-gray-400">
-            <NavLink to="/loading">Loading test</NavLink>
+          <li className="text-2xl cursor-pointer font-semibold text-blue-400 hover:text-blue-600">
+            <NavLink to="/countries">Państwa świata</NavLink>
           </li>
         </ul>
       </nav>

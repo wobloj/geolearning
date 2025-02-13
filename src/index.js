@@ -14,6 +14,8 @@ import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
 import Profile from "./pages/Profile";
 import Loading from "./components/Loading";
+import CountriesList from "./pages/CountriesList";
+import CountryInfo from "./pages/CountryInfo";
 
 
 const router = createBrowserRouter(
@@ -34,8 +36,13 @@ const router = createBrowserRouter(
       errorElement: <div>404 Not Found</div>,
     },
     {
-      path: "/loading",
-      element: <Loading />,
+      path: "/countries",
+      element: <CountriesList />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/country/:code",
+      element: <CountryInfo />,
       errorElement: <div>404 Not Found</div>,
     },
     {

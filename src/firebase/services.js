@@ -151,13 +151,11 @@ const addToLearn = async (country) => {
 
     if (userDoc.exists()) {
       // Aktualizacja listy krajów, jeśli dokument użytkownika istnieje
-      if(userDoc.data().countries.includes(country)){
-        return "Kraj jest już na liście nauki";
-      }else{
+
         await updateDoc(userRef, {
         countries: arrayUnion(country)
       });
-      }
+
       
     } else {
       // Tworzenie dokumentu użytkownika, jeśli jeszcze nie istnieje

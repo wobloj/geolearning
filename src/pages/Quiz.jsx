@@ -106,8 +106,8 @@ export default function Quiz() {
 
   const apiUrl =
     regionApi === "world"
-      ? "https://restcountries.com/v3.1/all?fields=translations,flags,independent,capital"
-      : `https://restcountries.com/v3.1/region/${regionApi}?fields=translations,flags,independent,capital`;
+      ? "https://restcountries.com/v3.1/all?fields=translations,flags,independent,capital,ccn3"
+      : `https://restcountries.com/v3.1/region/${regionApi}?fields=translations,flags,independent,capital,ccn3`;
 
   useEffect(() => {
     setupQuiz();
@@ -154,7 +154,7 @@ export default function Quiz() {
     setSelectedMode(e.target.value);
   };
 
-  const generateQuestions = () => {
+  const generateQuestions = async () => {
     let generatedNumbers = [];
     let generatedData = [];
 
@@ -177,13 +177,10 @@ export default function Quiz() {
 
   const handleStartQuiz = async () => {
     setIsLoading(true);
-    generateQuestions();
+    await generateQuestions();
     setIsLoading(false);
     setStartQuiz(true);
   };
-  //TODO: Jeżeli typ quizu to wybór na podstawie flagi ma wyświetlać quiz pokazujący flagi, jeżeli na podstawie nazwy to ma wyświetlać nazwe kraju, jezeli na podstawie stolicy ma wyswietlac nazwe stolicy
-  //TODO: Zaflagować kraje które nie są podległe
-  //TODO: Dodać timer
   return (
     <div className="font-monts bg-default bg-blue-100 bg-opacity-5 flex items-center flex-col h-screen relative">
       <NavLink
