@@ -11,8 +11,6 @@ const loginUser = async (email, password, context) => {
   const { setUsername, setIsLoggedIn, setUserUid } = context;
 
   try {
-    await setPersistence(auth, browserLocalPersistence);
-
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -26,13 +24,10 @@ const loginUser = async (email, password, context) => {
     if (userDoc.exists()) {
       const userData = userDoc.data();
 
-      console.log("Dane użytkownika z Firestore:", userData);
-
       setUsername(userData.username);
       setUserUid(user.uid);
       setIsLoggedIn(true);
 
-      console.log("Zalogowano użytkownika:", user.uid);
     } else {
       throw new Error("Brak danych użytkownika w bazie.");
     }
@@ -77,25 +72,28 @@ const updateUserPoints = async (region, quizType, mode, points, username) => {
     const userSnapshot = await getDoc(userRef);
 
     if (!userSnapshot.exists()) {
-      console.warn("Dokument użytkownika nie istnieje. Tworzę nowy.");
-      await setDoc(userRef, { points: {} });
+      await setDoc(userRef, { points: {}, });
+      console.log("Utworzono nowy dokument użytkownika:", user.uid);
     }
 
     const leaderboardRef = doc(db, "leaderboard", `${region}_${quizType}_${mode}`);
     const leaderboardSnapshot = await getDoc(leaderboardRef);
 
     if (!leaderboardSnapshot.exists()) {
-      console.warn("Dokument leaderboarda nie istnieje. Tworzę nowy.");
       await setDoc(leaderboardRef, {});
+      console.log("Utworzono nowy dokument leaderboarda:", region, quizType, mode);
     }
 
     const leaderboardData = leaderboardSnapshot.data() || {};
-    const currentPoints = leaderboardData[user.displayName]?.points || 0;
+    const currentPoints = leaderboardData[user.uid]?.points || 0;
+
+    console.log("Leaderboard data before update:", leaderboardData);
+    console.log(`Current points for ${user.uid}: ${currentPoints}, new points: ${points}`);
 
     if (points > currentPoints) {
       await updateDoc(leaderboardRef, {
-      [`${user.uid}`]: { points, username },
-    });
+        [`${user.uid}`]: { points, username },
+      });
       console.log("Punkty zostały zaktualizowane w leaderboardzie:", username, points);
     } else {
       console.log("Nowe punkty nie są większe niż obecne. Aktualizacja nie jest wymagana.");
@@ -150,15 +148,12 @@ const addToLearn = async (country) => {
     const userDoc = await getDoc(userRef);
 
     if (userDoc.exists()) {
-      // Aktualizacja listy krajów, jeśli dokument użytkownika istnieje
-
         await updateDoc(userRef, {
         countries: arrayUnion(country)
       });
 
       
     } else {
-      // Tworzenie dokumentu użytkownika, jeśli jeszcze nie istnieje
       await setDoc(userRef, {
         countries: [country]
       });

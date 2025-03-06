@@ -5,8 +5,9 @@ import axios from "axios";
 import { NavLink } from "react-router-dom";
 
 export default function CountriesList() {
-  const [listOfCountries, setListOfCountries] = useState([]);
   const [countriesByContinent, setCountriesByContinent] = useState({});
+  const [filteredCountries, setFilteredCountries] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleContinentName = (continent) => {
     switch (continent) {
@@ -25,13 +26,33 @@ export default function CountriesList() {
     }
   };
 
+  const findCountry = (text) => {
+    if (text === "") {
+      setFilteredCountries(countriesByContinent);
+      return;
+    }
+
+    const filtered = Object.keys(countriesByContinent).reduce(
+      (acc, continent) => {
+        acc[continent] = countriesByContinent[continent].filter((country) =>
+          country.translations.pol.common
+            .toLowerCase()
+            .includes(text.toLowerCase())
+        );
+        return acc;
+      },
+      {}
+    );
+
+    setFilteredCountries(filtered);
+  };
+
   useEffect(() => {
     document.title = "Geolearn - Lista krajów";
     axios
       .get("https://restcountries.com/v3.1/all?independent=true")
       .then((response) => {
         const countries = response.data;
-        setListOfCountries(countries);
 
         const continents = ["Europe", "Africa", "Asia", "Americas", "Oceania"];
         const groupedCountries = continents.reduce((acc, continent) => {
@@ -42,11 +63,17 @@ export default function CountriesList() {
         }, {});
 
         setCountriesByContinent(groupedCountries);
+        setFilteredCountries(groupedCountries);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -54,13 +81,23 @@ export default function CountriesList() {
         <Header />
         <div className="flex flex-col items-center ">
           <Suspense fallback={<Loading />}>
-            {Object.keys(countriesByContinent).map((continent) => (
+            <label className="mt-5 font-semibold" htmlFor="search">
+              Wyszukaj państwo
+            </label>
+            <input
+              type="text"
+              name="search"
+              id="search"
+              className="border-2 border-blue-400 outline-none text-xl h-10"
+              onChange={(e) => findCountry(e.target.value)}
+            />
+            {Object.keys(filteredCountries).map((continent) => (
               <div key={continent}>
                 <h2 className="flex justify-center my-20 text-4xl">
                   {handleContinentName(continent)}
                 </h2>
                 <div className="grid grid-cols-5 gap-24 mx-20">
-                  {countriesByContinent[continent].map((data, index) => (
+                  {filteredCountries[continent].map((data, index) => (
                     <NavLink
                       to={`/country/${data.cca3}`}
                       state={{ ccn3: data.ccn3 }}

@@ -69,7 +69,10 @@ export default function QuizTypeMap(props) {
   //TODO: Błędną oraz poprawną odpowiedź należy wyróżnić
   //TODO: Jeżeli użytkownik zaznaczy złą odpowiedź zaznacz na mapie jego odpowiedz oraz poprawną odpowiedź
   return (
-    <div className="h-screen flex font-monts flex-col">
+    <div
+      data-testid="quiz-type-map"
+      className="h-screen flex font-monts flex-col"
+    >
       {!isFinished ? (
         <div className="flex flex-col items-center justify-center">
           <ProgressBar

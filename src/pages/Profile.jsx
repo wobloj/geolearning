@@ -66,14 +66,6 @@ export default function Profile() {
             >
               Nauka
             </p>
-            <p
-              onClick={() => {
-                setTitlePanel("Punkty");
-              }}
-              className="text-l cursor-pointer hover:text-blue-600"
-            >
-              Punkty
-            </p>
           </div>
         </div>
         <div className="border-2 border-blue-500 px-8 py-4 rounded-md mr-60 h-full w-full bg-white ">

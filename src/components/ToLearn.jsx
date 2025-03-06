@@ -90,30 +90,38 @@ export default function ToLearn({ toLearn }) {
   return (
     <div>
       <div className="flex flex-row justify-center gap-12 mb-10">
-        <select
-          className="border border-blue-500 cursor-pointer py-2 w-full"
-          name="quiz"
-          onChange={handleLeaningFrom}
-        >
-          {learnTo !== "flag" && <option value="flag">Flaga</option>}
-          {learnTo !== "country" && (
-            <option value="country">Nazwa państwa</option>
-          )}
-          {learnTo !== "capital" && <option value="capital">Stolica</option>}
-        </select>
-        <select
-          className="border border-blue-500 cursor-pointer py-2 w-full"
-          name="quiz"
-          onChange={handleLeaningTo}
-        >
-          {learnFrom !== "flag" && <option value="flag">Flaga</option>}
-          {learnFrom !== "country" && (
-            <option value="country">Nazwa państwa</option>
-          )}
-          {learnFrom !== "capital" && <option value="capital">Stolica</option>}
-        </select>
+        <div>
+          <label className="block">Ucz się z:</label>
+          <select
+            className="border border-blue-500 cursor-pointer py-2 w-52"
+            name="quiz"
+            onChange={handleLeaningFrom}
+          >
+            {learnTo !== "flag" && <option value="flag">Flaga</option>}
+            {learnTo !== "country" && (
+              <option value="country">Nazwa państwa</option>
+            )}
+            {learnTo !== "capital" && <option value="capital">Stolica</option>}
+          </select>
+        </div>
+        <div>
+          <label className="block">Ucz się na:</label>
+          <select
+            className="border border-blue-500 cursor-pointer py-2 w-52"
+            name="quiz"
+            onChange={handleLeaningTo}
+          >
+            {learnFrom !== "flag" && <option value="flag">Flaga</option>}
+            {learnFrom !== "country" && (
+              <option value="country">Nazwa państwa</option>
+            )}
+            {learnFrom !== "capital" && (
+              <option value="capital">Stolica</option>
+            )}
+          </select>
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-24">
+      <div className="grid grid-cols-3 gap-24 overflow-hidden overflow-y-auto px-2">
         {listOfCountries.map((data, index) => {
           return (
             <div

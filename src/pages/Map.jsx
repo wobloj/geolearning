@@ -32,6 +32,7 @@ export default function Map() {
   const [capitalCoordinates, setCapitalCoordinates] = useState([0, 0]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [countryData, setCountryData] = useState(null);
+  const [selectedCountryId, setSelectedCountryId] = useState(null);
 
   const location = useLocation();
   const selectedCountry = useRef(null);
@@ -73,7 +74,7 @@ export default function Map() {
       </Tooltip>
       <ComposableMap
         projection="geoEqualEarth"
-        className=" bg-map bg-orange-200 border-2 border-black"
+        className="bg-map bg-orange-200 border-2 border-black m-auto h-1/2 w-[calc(100%-15rem)]"
       >
         <ZoomableGroup
           center={location.state.coordinates}
@@ -83,60 +84,61 @@ export default function Map() {
           <Geographies geography={changeContinent()}>
             {({ geographies }) =>
               geographies.map((geo) => (
-                <a>
-                  <Geography
-                    ref={selectedCountry}
-                    onFocus={focused}
-                    onBlur={notFocused}
-                    className="country stroke-[0.07px] stroke-black outline-none fill-orange-200 transition-all hover:fill-orange-300 hover:outline-none hover:cursor-pointer focus:fill-yellow-500 focus:stroke-[0.1px] focus:stroke-yellow-800"
-                    key={geo.rsmKey}
-                    geography={geo}
-                    onClick={async () => {
-                      try {
-                        setDataLoaded(false);
-                        const response = await axios.get(
-                          `https://restcountries.com/v3.1/name/${geo.properties.admin}`
-                        );
+                <Geography
+                  ref={selectedCountry}
+                  onFocus={focused}
+                  onBlur={notFocused}
+                  className={`country stroke-[0.07px] stroke-black outline-none transition-all hover:fill-orange-300 hover:outline-none hover:cursor-pointer ${
+                    selectedCountryId === geo.properties.iso_n3_eh
+                      ? "fill-orange-300"
+                      : "fill-orange-200"
+                  }`}
+                  key={geo.rsmKey}
+                  geography={geo}
+                  onClick={async () => {
+                    try {
+                      setDataLoaded(false);
+                      const response = await axios.get(
+                        `https://restcountries.com/v3.1/name/${geo.properties.admin}`
+                      );
 
-                        console.log(response);
+                      setCountryData(response.data);
 
-                        setCountryData(response.data);
+                      let countryName = "";
+                      let countryCapital = "";
+                      let countryCoordinates = [];
+                      let countryCcn3 = "";
 
-                        let countryName = "";
-                        let countryCapital = "";
-                        let countryCoordinates = [];
-                        let countryCcn3 = "";
-
-                        for (const country of response.data) {
-                          if (country.ccn3 === geo.properties.iso_n3_eh) {
-                            countryName = geo.properties.name_pl;
-                            countryCapital = country.capital;
-                            countryCoordinates =
-                              country.capitalInfo.latlng.reverse();
-                            countryCcn3 = geo.properties.iso_n3_eh;
-                            break;
-                          }
+                      for (const country of response.data) {
+                        if (country.ccn3 === geo.properties.iso_n3_eh) {
+                          countryName = geo.properties.name_pl;
+                          countryCapital = country.capital;
+                          countryCoordinates =
+                            country.capitalInfo.latlng.reverse();
+                          countryCcn3 = geo.properties.iso_n3_eh;
+                          break;
                         }
-
-                        setCountry(countryName);
-                        setCapital(countryCapital);
-                        setCapitalCoordinates(countryCoordinates);
-                        setCountryCcn3(countryCcn3);
-
-                        setDataLoaded(true);
-                      } catch (error) {
-                        console.log(error);
                       }
-                    }}
-                    onMouseEnter={() => {
-                      setCountryTooltip(geo.properties.name_pl);
-                    }}
-                    onMouseLeave={() => {
-                      setCountryTooltip("");
-                    }}
-                    // TODO: Podczas przesuwania mapy maja nie znikać podświetlenia oraz tekst ze stolica kraju
-                  />
-                </a>
+
+                      setCountry(countryName);
+                      setCapital(countryCapital);
+                      setCapitalCoordinates(countryCoordinates);
+                      setCountryCcn3(countryCcn3);
+                      setSelectedCountryId(geo.properties.iso_n3_eh);
+
+                      setDataLoaded(true);
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }}
+                  onMouseEnter={() => {
+                    setCountryTooltip(geo.properties.name_pl);
+                  }}
+                  onMouseLeave={() => {
+                    setCountryTooltip("");
+                  }}
+                  // TODO: Podczas przesuwania mapy maja nie znikać podświetlenia oraz tekst ze stolica kraju
+                />
               ))
             }
           </Geographies>

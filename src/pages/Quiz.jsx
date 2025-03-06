@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { act } from "react-dom/test-utils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faChevronLeft,
   faFlagUsa,
   faLocationDot,
   faMapPin,
@@ -14,6 +14,7 @@ import QuizTypeMap from "../components/quizTypes/QuizTypeMap";
 import QuizTypeClosed from "../components/quizTypes/QuizTypeClosed";
 import QuizTypeOpen from "../components/quizTypes/QuizTypeOpen";
 import Loading from "../components/Loading";
+import Back from "../components/Back";
 
 export default function Quiz() {
   const [startQuiz, setStartQuiz] = useState(false);
@@ -23,6 +24,7 @@ export default function Quiz() {
   const [questions, setQuestions] = useState({});
   const [selectedMode, setSelectedMode] = useState("open");
   const [quantityOfQuestions, setQuantityOfQuestions] = useState(5);
+  const [error, setError] = useState(null);
 
   const [regionApi, setRegionApi] = useState("");
   const [region, setRegion] = useState("");
@@ -126,9 +128,12 @@ export default function Quiz() {
           } else {
             setCountryData(response.data);
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
+          setError("Something went wrong");
+          setIsLoading(false);
         });
     }
   }, [regionApi]);
@@ -154,42 +159,44 @@ export default function Quiz() {
     setSelectedMode(e.target.value);
   };
 
-  const generateQuestions = async () => {
+  const generateQuestions = () => {
     let generatedNumbers = [];
     let generatedData = [];
+    const maxAttempts = countryData.length * 2; // Dodaj zabezpieczenie przed pętlą
 
     for (let i = 0; i < quantityOfQuestions; i++) {
-      let generateNumber = parseInt(
-        Math.random() * (countryData.length - 0) + 0
-      );
+      let attempts = 0;
+      let generateNumber;
 
-      if (generatedNumbers.includes(generateNumber)) {
-        i--;
-        continue;
-      }
+      do {
+        generateNumber = Math.floor(Math.random() * countryData.length);
+        attempts++;
+        if (attempts > maxAttempts) {
+          setError("Not enough unique countries available");
+          return;
+        }
+      } while (generatedNumbers.includes(generateNumber));
 
       generatedNumbers.push(generateNumber);
       generatedData.push(countryData[generateNumber]);
     }
     setQuestions(generatedData);
-    console.log(generatedData);
   };
 
   const handleStartQuiz = async () => {
+    if (!countryData) {
+      setError("No country data available");
+      return;
+    }
     setIsLoading(true);
     await generateQuestions();
     setIsLoading(false);
     setStartQuiz(true);
   };
+
   return (
     <div className="font-monts bg-default bg-blue-100 bg-opacity-5 flex items-center flex-col h-screen relative">
-      <NavLink
-        to={"/"}
-        className="absolute left-5 top-5 flex justify-center items-center gap-2 transition-colors hover:text-red-700"
-      >
-        <FontAwesomeIcon icon={faChevronLeft} />
-        Powrót
-      </NavLink>
+      <Back to={`/`} />
 
       {!startQuiz ? (
         <div className="flex flex-col gap-5 items-center justify-center h-screen">
@@ -203,6 +210,7 @@ export default function Quiz() {
               Typ quizu
             </label>
             <select
+              id="quiz"
               className="border border-blue-500 cursor-pointer py-2 w-full"
               onChange={handleQuizMode}
               name="quiz"
@@ -217,6 +225,7 @@ export default function Quiz() {
               Poziom trudności
             </label>
             <select
+              id="difficulty"
               className="border border-blue-500 cursor-pointer py-2 w-full"
               name="difficulty"
               onChange={handleDifficultyChange}
@@ -229,19 +238,17 @@ export default function Quiz() {
 
           <button
             className="flex items-center justify-center font-medium mt-5 border-2 border-black rounded-[0.7rem] h-12 w-52 select-none transition-colors bg-white cursor-pointer hover:bg-blue-50 hover:border-blue-500 hover:text-blue-500"
-            onClick={async () => {
-              const response = await axios.get(apiUrl);
-              console.log(response.data);
-              handleStartQuiz();
-            }}
+            onClick={handleStartQuiz}
           >
             Start
           </button>
+          {error && <p>{error}</p>}
         </div>
       ) : isLoading ? (
         <Loading />
       ) : selectedMode === "open" ? (
         <QuizTypeOpen
+          data-testid="quiz-type-open"
           quizType={quizTypeState}
           region={region}
           regionApi={regionApi}
@@ -252,6 +259,7 @@ export default function Quiz() {
         />
       ) : selectedMode === "map" ? (
         <QuizTypeMap
+          data-testid="quiz-type-map"
           quizType={quizTypeState}
           region={region}
           regionApi={regionApi}
@@ -262,6 +270,7 @@ export default function Quiz() {
         />
       ) : (
         <QuizTypeClosed
+          data-testid="quiz-type-closed"
           quizType={quizTypeState}
           region={region}
           regionApi={regionApi}

@@ -21,7 +21,9 @@ export default function Leaderboard({
       const data = await getLeaderboard(region, quizType, mode);
       setLeaderboardData(data);
     } catch (error) {
-      setError("Nie udało się pobrać tablicy wyników. Spróbuj ponownie później.");
+      setError(
+        "Nie udało się pobrać tablicy wyników. Spróbuj ponownie później."
+      );
     } finally {
       setLoading(false);
     }
@@ -40,84 +42,86 @@ export default function Leaderboard({
           onClick={() => setIsLeaderboardVisible(false)}
         />
         <div className="flex justify-center items-center flex-col h-1/4">
-        <h1 className="font-semibold text-4xl my-10">Tablica wyników</h1>
-        <p className="font-semibold text-2xl mb-2">{continent}</p>
-        <p className="font-medium text-xl mb-10">
-          {quizType === "flags"
-            ? "Wybór na podstawie flagi"
-            : quizType === "country"
-            ? "Wybór na podstawie nazwy państw"
-            : "Wybór na podstawie stolicy państwa"}
-        </p>
+          <h1 className="font-semibold text-4xl my-10">Tablica wyników</h1>
+          <p className="font-semibold text-2xl mb-2">{continent}</p>
+          <p className="font-medium text-xl mb-10">
+            {quizType === "flags"
+              ? "Wybór na podstawie flagi"
+              : quizType === "country"
+              ? "Wybór na podstawie nazwy państw"
+              : "Wybór na podstawie stolicy państwa"}
+          </p>
 
-        <div className="mb-5 flex justify-center items-center">
-          <label className="flex gap-1">
-            <input
-              type="radio"
-              name="mode"
-              value="open"
-              checked={mode === "open"}
-              onChange={(e) => setMode(e.target.value)}
-            />
-            Pytania otwarte
-          </label>
-          <label className="ml-4 flex gap-1">
-            <input
-              type="radio"
-              name="mode"
-              value="closed"
-              checked={mode === "closed"}
-              onChange={(e) => setMode(e.target.value)}
-            />
-            Pytania zamknięte
-          </label>
-          <label className="ml-4 flex gap-1">
-            <input
-              type="radio"
-              name="mode"
-              value="map"
-              checked={mode === "map"}
-              onChange={(e) => setMode(e.target.value)}
-            />
-            Pytania na mapie
-          </label>
-        </div>
+          <div className="mb-5 flex justify-center items-center">
+            <label className="flex gap-1">
+              <input
+                type="radio"
+                name="mode"
+                value="open"
+                checked={mode === "open"}
+                onChange={(e) => setMode(e.target.value)}
+              />
+              Pytania otwarte
+            </label>
+            <label className="ml-4 flex gap-1">
+              <input
+                type="radio"
+                name="mode"
+                value="closed"
+                checked={mode === "closed"}
+                onChange={(e) => setMode(e.target.value)}
+              />
+              Pytania zamknięte
+            </label>
+            <label className="ml-4 flex gap-1">
+              <input
+                type="radio"
+                name="mode"
+                value="map"
+                checked={mode === "map"}
+                onChange={(e) => setMode(e.target.value)}
+              />
+              Pytania na mapie
+            </label>
+          </div>
         </div>
         {error && <p className="text-red-500 mb-5">{error}</p>}
-        <div className="h-3/4 flex justify-center items-center">  
-        {loading ? (
-          <p className="text-xl font-semibold">Ładowanie wyników...</p>
-        ) : leaderboardData.length === 0 ? (
-          <p className="text-xl font-semibold">Brak wyników do wyświetlenia.</p>
-        ) : (
-          <table className="text-center border-[1px] border-black">
-            <thead>
-              <tr className="bg-white">
-                <th className="px-5 border-[1px] border-black border-r-transparent">
-                  Pozycja
-                </th>
-                <th className="px-5 border-[1px] border-black border-r-transparent">
-                  Nazwa użytkownika
-                </th>
-                <th className="px-5 border-[1px] border-black border-l-transparent">
-                  Punkty
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderboardData.map((entry, index) => (
-                <tr
-                  key={index}
-                  className={index % 2 === 0 ? "bg-white" : "bg-blue-200"}
-                >
-                  <td>{index + 1}</td>
-                  <td>{entry.username}</td>
-                  <td>{entry.points}</td>
+        <div className="h-3/4 flex justify-center items-start mt-12 w-full">
+          {loading ? (
+            <p className="text-xl font-semibold">Ładowanie wyników...</p>
+          ) : leaderboardData.length === 0 ? (
+            <p className="text-xl font-semibold">
+              Brak wyników do wyświetlenia.
+            </p>
+          ) : (
+            <table className="text-center border-[1px] border-black">
+              <thead>
+                <tr className="bg-white">
+                  <th className="px-5 border-[1px] border-black border-r-transparent">
+                    Pozycja
+                  </th>
+                  <th className="px-5 border-[1px] border-black border-r-transparent">
+                    Nazwa użytkownika
+                  </th>
+                  <th className="px-5 border-[1px] border-black border-l-transparent">
+                    Punkty
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {leaderboardData.map((entry, index) => (
+                  <tr
+                    key={index}
+                    className={index % 2 === 0 ? "bg-white" : "bg-blue-200"}
+                  >
+                    <td>{index + 1}</td>
+                    <td>{entry.username}</td>
+                    <td>{entry.points}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </>

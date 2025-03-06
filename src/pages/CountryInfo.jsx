@@ -5,10 +5,13 @@ import { faLink } from "@fortawesome/free-solid-svg-icons";
 import Back from "../components/Back";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { translateText } from "../api/translate";
 
 export default function CountryInfo() {
   const location = useLocation();
   const [country, setCountry] = useState(null);
+  const [translatedData, setTranslatedData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCountryData = async () => {
@@ -18,15 +21,44 @@ export default function CountryInfo() {
         const filteredCountry = countries.find(
           (country) => country.ccn3 === location.state.ccn3
         );
+
+        if (!filteredCountry) {
+          setLoading(false);
+          return;
+        }
+
         setCountry(filteredCountry);
-        console.log(filteredCountry);
+
+        const continent = filteredCountry.continents[0];
+        const capital = filteredCountry.capital[0];
+        const languages = Object.values(filteredCountry.languages || {});
+
+        const [translatedContinent, translatedCapital, ...translatedLanguages] =
+          await Promise.all([
+            translateText(continent),
+            translateText(capital),
+            ...languages.map((lang) => translateText(lang)),
+          ]);
+
+        setTranslatedData({
+          capital: translatedCapital,
+          continent: translatedContinent,
+          languages: translatedLanguages,
+        });
+
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching country data:", error);
+        setLoading(false);
       }
     };
 
     fetchCountryData();
   }, [location.state.ccn3]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -51,18 +83,23 @@ export default function CountryInfo() {
                   </h3>
                   <p>
                     Stolica:{" "}
-                    <span className="font-bold">
-                      {country.capital ? country.capital[0] : "Brak"}
-                    </span>
+                    <span className="font-bold">{translatedData.capital}</span>
                   </p>
                   <p>
                     Język obowiązujący:{" "}
                     <span className="font-bold">
-                      {Object.values(country.languages).join(", ")}
+                      {Object.values(translatedData.languages)
+                        .map((language) => {
+                          return language;
+                        })
+                        .join(", ")}
                     </span>
                   </p>
                   <p>
-                    Region: <span className="font-bold">{country.region}</span>
+                    Kontynent:{" "}
+                    <span className="font-bold">
+                      {translatedData.continent}
+                    </span>
                   </p>
                   <p>
                     Populacja:{" "}
