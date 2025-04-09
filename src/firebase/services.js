@@ -4,6 +4,8 @@ import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  sendEmailVerification
 } from "firebase/auth";
 import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
@@ -46,19 +48,30 @@ const registerUser = async (email, password, username, points) => {
     );
     const user = userCredential.user;
 
-    
+    await sendEmailVerification(user);
+
     await setDoc(doc(db, "users", user.uid), {
       username: username,
       points: points,
     });
 
-    console.log("Zarejestrowano i zapisano dane użytkownika:", user.uid);
+    console.log("Zarejestrowano i wysłano link weryfikacyjny:", user.uid);
   } catch (error) {
     console.error("Błąd rejestracji:", error.code, error.message);
     throw new Error("Rejestracja nie powiodła się.");
   }
 };
 
+
+const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log("Wysłano e-mail do resetowania hasła.");
+  } catch (error) {
+    console.error("Błąd podczas wysyłania e-maila do resetowania hasła:", error);
+    throw new Error("Nie udało się wysłać e-maila do resetowania hasła.");
+  }
+}
 
 const updateUserPoints = async (region, quizType, mode, points, username) => {
   const user = auth.currentUser;
@@ -203,4 +216,4 @@ const getUserData = async () =>{
   return {username, email};
 }
 
-export { registerUser, loginUser, updateUserPoints, getLeaderboard, getUserData, addToLearn, getToLearn };
+export { registerUser, loginUser, updateUserPoints, getLeaderboard, getUserData, addToLearn, getToLearn, resetPassword };

@@ -8,7 +8,6 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 
 function App() {
-  //TODO: Pierwsze wysunięcie nie działa poprawnie
   const [continent, setContinent] = useState("");
   const [quizType, setQuizType] = useState("");
   const [level, setLevel] = useState("");

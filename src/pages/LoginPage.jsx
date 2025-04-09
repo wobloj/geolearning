@@ -69,11 +69,6 @@ export default function LoginPage() {
         >
           Zaloguj
         </button>
-        {/* <Link to={"/reset"}>
-          <p className=" text-blue-500 transition-colors hover:text-blue-700 mb-5">
-            Zresetuj hasło
-          </p>
-        </Link> */}
       </form>
       {isError && (
         <PopUp>
@@ -81,13 +76,23 @@ export default function LoginPage() {
         </PopUp>
       )}
 
-      <div className="flex justify-center items-center flex-col gap-2">
-        <p className="text-3xl font-medium">Nie masz konta?</p>
-        <Link to={"/register"}>
-          <p className=" text-blue-400 transition-colors hover:text-blue-600">
-            Zarejestruj się!
-          </p>
-        </Link>
+      <div className="flex justify-center items-top flex-row gap-10">
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-2xl font-medium">Nie pamiętasz hasła?</p>
+          <Link to={"/reset-password"}>
+            <p className=" text-blue-500 transition-colors hover:text-blue-700 mb-5">
+              Przypomnij hasło
+            </p>
+          </Link>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-2xl font-medium">Nie masz konta?</p>
+          <Link to={"/register"}>
+            <p className=" text-blue-400 transition-colors hover:text-blue-600">
+              Zarejestruj się!
+            </p>
+          </Link>
+        </div>
       </div>
     </div>
   );

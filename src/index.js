@@ -16,6 +16,7 @@ import Profile from "./pages/Profile";
 import Loading from "./components/Loading";
 import CountriesList from "./pages/CountriesList";
 import CountryInfo from "./pages/CountryInfo";
+import ResetPassword from "./pages/ResetPassword";
 
 
 const router = createBrowserRouter(
@@ -28,6 +29,11 @@ const router = createBrowserRouter(
     {
       path: "/login",
       element: <LoginPage />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: "/reset-password",
+      element: <ResetPassword />,
       errorElement: <div>404 Not Found</div>,
     },
     {
