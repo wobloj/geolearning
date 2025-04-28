@@ -4,8 +4,6 @@ import Footer from "../components/Footer";
 import LevelDescription from "../components/LevelDescription";
 import Leaderboard from "../components/Leaderboard";
 import { useState } from "react";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider";
 
 function App() {
   const [continent, setContinent] = useState("");
@@ -36,18 +34,16 @@ function App() {
     }
   };
 
-  const { user } = useContext(AuthContext);
-
   return (
     <div
-      className={`font-monts bg-default bg-blue-100 bg-opacity-5 ${
+      className={`font-monts transition-colors duration-300 bg-backgroundlight dark:bg-backgrounddark ${
         isLeaderboardVisible ? "overflow-hidden" : "overflow-auto"
       }`}
     >
       <Header />
       <br />
       <div
-        className={`fixed shadow-xl w-4/12 flex flex-col items-center border-2 border-black rounded-md py-6 px-4 mx-20 mt-10 bg-white transition-transform duration-300 ease-in-out ${
+        className={`fixed shadow-xl w-4/12 flex flex-col items-center border-2 text-black dark:text-white border-black dark:border-blue-400 rounded-md py-6 px-4 mx-20 mt-10 bg-backgroundlight dark:bg-backgrounddark transition-all duration-300 ease-in-out ${
           isFirstInteraction
             ? isAnimating
               ? "-translate-x-[1000px]"

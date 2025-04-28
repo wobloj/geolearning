@@ -21,8 +21,13 @@ const threeDEffect = plugin(function ({ addUtilities }) {
 
 module.exports = {
   content: ["./src/**/*.{html,js,jsx}"],
+  darkMode: "class",
   theme: {
     extend: {
+      colors:{
+        backgroundlight: "#FDFAF6",
+        backgrounddark: "#282828",
+      },
       fontFamily: {
         monts: ["Montserrat", ...defaultTheme.fontFamily.sans],
         awesome: ["Font Awesome 5 Free"],

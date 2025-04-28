@@ -7,7 +7,7 @@ export default function Level({ color, colorMap, levelTitle, onClick }) {
       <div></div>
       <div className="flex flex-col items-center justify-center">
         <h1
-          className={` flex flex-row items-center gap-5 text-4xl py-5 font-semibold text-black`}
+          className={` flex flex-row items-center gap-5 text-4xl py-5 font-semibold text-black dark:text-white`}
         >
           {levelTitle}
         </h1>

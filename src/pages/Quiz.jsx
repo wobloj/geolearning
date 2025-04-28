@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -35,76 +34,58 @@ export default function Quiz() {
   const levelTitleState = location.state.levelTitle;
   const quizTypeState = location.state.typeQuiz;
 
-  const setupQuiz = () => {
-    switch (levelTitleState) {
-      case "Europa":
-        setRegionApi("europe");
-        setRegion("europe");
-        break;
-      case "Ameryka Północna":
-        setRegionApi("north america");
-        setRegion("north_america");
-        break;
-      case "Ameryka Południowa":
-        setRegionApi("south america");
-        setRegion("south_america");
-        break;
-      case "Afryka":
-        setRegionApi("africa");
-        setRegion("africa");
-        break;
-      case "Azja":
-        setRegionApi("asia");
-        setRegion("asia");
-        break;
-      case "Oceania":
-        setRegionApi("oceania");
-        setRegion("oceania");
-        break;
-      case "Świat":
-        setRegionApi("world");
-        setRegion("world");
-        break;
-      default:
-        setRegionApi("world");
-        setRegion("world");
-        break;
-    }
-    switch (quizTypeState) {
-      case "flags":
-        setQuizTypeText(
+  const setupQuiz = useCallback(() => {
+    const regionMapping = {
+      Europa: { api: "europe", region: "europe" },
+      "Ameryka Północna": { api: "north america", region: "north_america" },
+      "Ameryka Południowa": { api: "south america", region: "south_america" },
+      Afryka: { api: "africa", region: "africa" },
+      Azja: { api: "asia", region: "asia" },
+      Oceania: { api: "oceania", region: "oceania" },
+      Świat: { api: "world", region: "world" },
+    };
+
+    const quizTypeMapping = {
+      flags: {
+        text: (
           <p className="font-medium text-xl">
             Wybór państwa na podstawie{" "}
             <span className="font-bold text-blue-600">flagi</span>
           </p>
-        );
-        setIcon(<FontAwesomeIcon className="text-[48px]" icon={faFlagUsa} />);
-        break;
-      case "country":
-        setQuizTypeText(
+        ),
+        icon: <FontAwesomeIcon className="text-[48px]" icon={faFlagUsa} />,
+      },
+      country: {
+        text: (
           <p className="font-medium text-xl">
             Wybór państwa na podstawie{" "}
             <span className="font-bold text-blue-600">nazwy państwa</span>
           </p>
-        );
-        setIcon(
-          <FontAwesomeIcon className="text-[48px]" icon={faLocationDot} />
-        );
-        break;
-      case "capital":
-        setQuizTypeText(
+        ),
+        icon: <FontAwesomeIcon className="text-[48px]" icon={faLocationDot} />,
+      },
+      capital: {
+        text: (
           <p className="font-medium text-xl">
             Wybór państwa na podstawie{" "}
             <span className="font-bold text-blue-600">stolicy kraju</span>
           </p>
-        );
-        setIcon(<FontAwesomeIcon className="text-[48px]" icon={faMapPin} />);
-        break;
-      default:
-        setQuizTypeText("");
-        break;
-    }
-  };
+        ),
+        icon: <FontAwesomeIcon className="text-[48px]" icon={faMapPin} />,
+      },
+    };
+
+    const regionData = regionMapping[levelTitleState] || regionMapping["Świat"];
+    setRegionApi(regionData.api);
+    setRegion(regionData.region);
+
+    const quizTypeData = quizTypeMapping[quizTypeState] || {
+      text: "",
+      icon: "",
+    };
+    setQuizTypeText(quizTypeData.text);
+    setIcon(quizTypeData.icon);
+  }, [levelTitleState, quizTypeState]);
 
   const apiUrl =
     regionApi === "world"
@@ -113,7 +94,7 @@ export default function Quiz() {
 
   useEffect(() => {
     setupQuiz();
-  }, [levelTitleState]);
+  }, [setupQuiz]);
 
   useEffect(() => {
     if (region) {

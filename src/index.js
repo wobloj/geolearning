@@ -13,7 +13,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import reportWebVitals from "./reportWebVitals";
 import Profile from "./pages/Profile";
-import Loading from "./components/Loading";
 import CountriesList from "./pages/CountriesList";
 import CountryInfo from "./pages/CountryInfo";
 import ResetPassword from "./pages/ResetPassword";

@@ -14,7 +14,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const context = useContext(UserContext);
@@ -26,11 +26,20 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       setIsError(true);
-      setError(err.message);
     }
   };
+
+  const validateEmail = (email) => {
+    const re =
+      /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/;
+    if (re.test(String(email).toLowerCase()) || email === "") {
+      setEmailError(false);
+    } else {
+      setEmailError(true);
+    }
+  };
+
   // TODO: Wyświetlać ma się powiadomienie jeżeli wpisane zostało błędne email lub hasło
-  // TODO: Dodać opcję resetu hasła
   return (
     <div className="flex flex-col items-center justify-center font-monts bg-default bg-blue-100 bg-opacity-5 h-screen">
       <NavLink
@@ -44,7 +53,7 @@ export default function LoginPage() {
         <FontAwesomeIcon className="w-10 h-10" icon={faEarthAmerica} />
         <p className="text-4xl font-bold">Logowanie</p>
       </div>
-      <form className="flex flex-col items-center gap-10">
+      <form className="flex flex-col items-center">
         <input
           className=" text-center border-2 rounded-md border-blue-400 w-80 h-10 transition-colors focus:outline-none focus:border-blue-600"
           placeholder="address@email.com"
@@ -53,9 +62,15 @@ export default function LoginPage() {
           type="email"
           name="email"
           id="email"
+          onBlur={(e) => validateEmail(e.target.value)}
         />
+        {emailError && (
+          <p className="text-sm text-red-400">
+            Nieprawidłowy format adresu email
+          </p>
+        )}
         <input
-          className="text-center border-2 rounded-md border-blue-400 w-80 h-10 transition-colors focus:outline-none focus:border-blue-600 before:content-['hasło']"
+          className="text-center border-2 mt-5 rounded-md border-blue-400 w-80 h-10 transition-colors focus:outline-none focus:border-blue-600 before:content-['hasło']"
           placeholder="hasło"
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -64,7 +79,7 @@ export default function LoginPage() {
           id="password"
         />
         <button
-          className="py-3 px-8 mb-10 bg-white border-2 border-blue-400 rounded-md transition-colors font-medium hover:bg-blue-100"
+          className="py-3 px-8 my-10 bg-white border-2 border-blue-400 rounded-md transition-colors font-medium hover:bg-blue-100"
           onClick={onLogin}
         >
           Zaloguj

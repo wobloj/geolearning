@@ -7,6 +7,8 @@ import { UserContext } from "../context/UserContext";
 import avatar from "../assets/avatar-default.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthEurope, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faSun, faMoon } from "@fortawesome/free-regular-svg-icons";
+import DarkModeSwitcher from "./DarkModeSwitcher";
 
 export default function Header() {
   const { username, setUsername, isLoggedIn, setIsLoggedIn } =
@@ -53,24 +55,30 @@ export default function Header() {
               </h1>
             </span>
             <span className="h-px bg-gray-600 w-full"></span>
-            <p className="text-3xl mt-1 text-blue-900">Ucz się geografii</p>
+            <p className="text-3xl mt-1 text-blue-900 dark:text-blue-600">
+              Ucz się geografii
+            </p>
           </div>
         </NavLink>
-        {isLoggedIn ? (
-          <button
-            onClick={handleLogout}
-            className="bg-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer hover:bg-blue-100 transition-colors"
-          >
-            Wylogowanie
-          </button>
-        ) : (
-          <NavLink to={`/login`}>
-            <div className="flex gap-2 items-center bg-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer hover:bg-blue-100 transition-colors">
-              <FontAwesomeIcon icon={faUser} />
-              Zaloguj się
+        <div className="flex flex-row items-center gap-5 justify-end">
+          <DarkModeSwitcher />
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="bg-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer hover:bg-blue-100 transition-colors"
+            >
+              Wylogowanie
+            </button>
+          ) : (
+            <div className="flex flex-row items-center gap-5">
+              <NavLink to={`/login`}>
+                <div className="flex gap-2 items-center bg-white dark:bg-zinc-800 dark:text-white font-medium py-3 px-5 border-2 border-blue-400 rounded-md cursor-pointer hover:bg-blue-100 transition-colors">
+                  Zaloguj się
+                </div>
+              </NavLink>
             </div>
-          </NavLink>
-        )}
+          )}
+        </div>
       </header>
       <div className="flex flex-col items-center mt-3">
         <Navbar />

@@ -6,7 +6,6 @@ export default function ToLearn({ toLearn }) {
   const [listOfCountries, setListOfCountries] = useState([]);
   const [learnFrom, setLearnFrom] = useState("flag");
   const [learnTo, setLearnTo] = useState("country");
-  const [disableButton, setDisableButton] = useState(false);
 
   useEffect(() => {
     const fetchCountries = async () => {

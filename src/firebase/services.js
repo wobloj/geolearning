@@ -1,7 +1,5 @@
 import { auth, db } from "./firebase";
 import {
-  setPersistence,
-  browserLocalPersistence,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,

@@ -17,7 +17,6 @@ export default function QuizTypeClosed(props) {
   const [fakeAnswers, setFakeAnswers] = useState([]);
   const [countries, setCountries] = useState([]);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [answerState, setAnswerState] = useState(null);
   const [yourAnswer, setYourAnswer] = useState(null);
   const [quizData, setQuizData] = useState([]);
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -73,7 +72,6 @@ export default function QuizTypeClosed(props) {
     setQuestionIndex((prevIndex) => prevIndex + 1);
     setIsAnswered(false);
     setYourAnswer(null);
-    setAnswerState(null);
     if (quantityOfQuestions - 1 === questionIndex) {
       setIsFinished(true);
       setQuestionIndex(0);
@@ -91,7 +89,6 @@ export default function QuizTypeClosed(props) {
     setYourAnswer(selectedAnswer);
 
     if (isCorrect) {
-      setAnswerState(true);
       setPoints(points + 100);
     } else {
       setQuizData((prevQuizData) => [
@@ -103,7 +100,6 @@ export default function QuizTypeClosed(props) {
           yourAnswer: selectedAnswer.translations.pol.common,
         },
       ]);
-      setAnswerState(false);
     }
     setIsAnswered(true);
     console.log(quizData);
