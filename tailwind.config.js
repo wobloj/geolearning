@@ -34,9 +34,8 @@ module.exports = {
       },
       backgroundImage: {
         default:
-          "url('https://www.transparenttextures.com/patterns/grid-me.png')",
+          "url('../src/assets/backgrounds/bg-default.png');",
         map: "url('https://www.transparenttextures.com/patterns/mooning.png')",
-        flag: "url('../src/assets/flag.png')",
       },
     },
   },

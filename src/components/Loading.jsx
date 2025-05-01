@@ -3,7 +3,7 @@ import React from "react";
 export default function Loading() {
   return (
     <>
-      <div className="  h-screen w-full gap-3 flex flex-row justify-center items-center bg-default font-bold text-4xl font-monts">
+      <div className="  h-screen w-full gap-3 flex flex-row justify-center items-center font-bold text-4xl">
         <div className=" text-blue-500 animate-bounce animate-delay-0">Ł</div>
         <div className=" text-blue-500 animate-bounce animate-delay-[50ms]">
           A

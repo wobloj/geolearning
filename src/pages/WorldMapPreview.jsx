@@ -4,6 +4,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Back from "../components/Back";
+import Header from "../components/Header";
 
 export default function Quiz() {
   const continents = [
@@ -45,9 +46,9 @@ export default function Quiz() {
   ];
 
   return (
-    <div className="w-full flex flex-col items-center font-monts bg-default min-h-screen bg-blue-100 bg-opacity-5 pb-20 relative">
-      <Back to={"/"} />
-      <h1 className="text-5xl py-16 font-bold text-blue-400 drop-shadow-md">
+    <div className="w-full flex flex-col items-center min-h-screen pb-20 relative">
+      <Header />
+      <h1 className="text-3xl mt-5 mb-16 font-bold text-blue-400 drop-shadow-md">
         Mapa świata
       </h1>
       <nav className="flex gap-10 pb-9">

@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    body {
+        @apply bg-default bg-backgroundlight text-black font-monts transition-colors duration-300;
+    }
+    .dark body{
+        @apply bg-backgrounddark text-white transition-colors duration-300;
+    }
+    input, button{
+        @apply bg-backgroundlight text-black transition-colors duration-300;
+    }
+    .dark input,
+    .dark button{
+        @apply bg-backgrounddark text-white transition-colors duration-300;
+    }
+    .dark select{
+        @apply bg-backgrounddark text-white transition-colors duration-300;
+    }
+}
+
 ::-webkit-scrollbar {
     width: 6px;
 }

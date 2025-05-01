@@ -62,7 +62,7 @@ export default function CountryInfo() {
 
   return (
     <>
-      <div className="bg-default min-h-screen pb-20 font-monts relative">
+      <div className="min-h-screen pb-20 relative">
         <Back to={"/countries"} />
         <h1 className="text-center text-5xl py-16 font-bold text-blue-400 drop-shadow-md">
           Informacje o kraju

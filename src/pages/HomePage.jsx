@@ -36,14 +36,14 @@ function App() {
 
   return (
     <div
-      className={`font-monts transition-colors duration-300 bg-backgroundlight dark:bg-backgrounddark ${
+      className={`${
         isLeaderboardVisible ? "overflow-hidden" : "overflow-auto"
       }`}
     >
       <Header />
       <br />
       <div
-        className={`fixed shadow-xl w-4/12 flex flex-col items-center border-2 text-black dark:text-white border-black dark:border-blue-400 rounded-md py-6 px-4 mx-20 mt-10 bg-backgroundlight dark:bg-backgrounddark transition-all duration-300 ease-in-out ${
+        className={`fixed shadow-xl w-4/12 flex flex-col items-center border-2 border-black dark:border-blue-400 rounded-md py-6 px-4 mx-20 mt-10 bg-backgroundlight dark:bg-backgrounddark transition-all duration-300 ease-in-out ${
           isFirstInteraction
             ? isAnimating
               ? "-translate-x-[1000px]"
@@ -105,8 +105,8 @@ function App() {
         }
       />
       <Level
-        colorMap="fill-gray-700"
-        color="bg-gray-700"
+        colorMap="fill-pink-800"
+        color="bg-pink-800"
         levelTitle="Świat"
         onClick={(quizNumber) => handleLevelClick("Świat", "world", quizNumber)}
       />

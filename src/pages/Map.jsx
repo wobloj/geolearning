@@ -74,7 +74,7 @@ export default function Map() {
       </Tooltip>
       <ComposableMap
         projection="geoEqualEarth"
-        className="bg-map bg-orange-200 border-2 border-black m-auto h-1/2 w-[calc(100%-15rem)]"
+        className="bg-map bg-backgroundlight dark:bg-sky-950 border-2 border-blue-400 m-auto aspect-video w-[calc(100%-15rem)]"
       >
         <ZoomableGroup
           center={location.state.coordinates}
@@ -88,10 +88,10 @@ export default function Map() {
                   ref={selectedCountry}
                   onFocus={focused}
                   onBlur={notFocused}
-                  className={`country stroke-[0.07px] stroke-black outline-none transition-all hover:fill-orange-300 hover:outline-none hover:cursor-pointer ${
+                  className={`country stroke-[0.04px] stroke-black outline-none transition-all hover:fill-green-700 hover:outline-none hover:cursor-pointer ${
                     selectedCountryId === geo.properties.iso_n3_eh
-                      ? "fill-orange-300"
-                      : "fill-orange-200"
+                      ? "fill-green-700"
+                      : "fill-green-600"
                   }`}
                   key={geo.rsmKey}
                   geography={geo}

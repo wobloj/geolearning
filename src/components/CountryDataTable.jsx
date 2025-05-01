@@ -36,7 +36,7 @@ export default function CountryDataTable({ ccn3, countryData, countryName }) {
   };
 
   return (
-    <div className="w-2/5 border-2 border-black bg-white">
+    <div className="w-[30%] border-2 border-blue-400 bg-backgroundlight dark:bg-backgrounddark">
       <p className="text-center text-4xl py-10">Dane</p>
       {isLoading ? (
         <div className="text-center text-lg py-10">Loading...</div>

@@ -94,13 +94,13 @@ export default function LevelDescription({
               levelTitle: levelName,
               typeQuiz: quizType,
             }}
-            className="flex items-center justify-center flex-1 max-w-64 border-2 border-green-500 font-medium text-green-500 rounded-lg py-2 px-8 text-center mt-6 transition-colors hover:border-green-700 hover:text-green-700 hover:bg-green-100"
+            className="flex items-center justify-center flex-1 max-w-64 border-2 border-green-500 font-medium text-green-500 rounded-lg py-2 px-8 text-center mt-6 transition-colors hover:border-green-700 hover:text-green-700 dark:hover:text-green-300 hover:bg-green-100 dark:hover:bg-green-800"
           >
             Start
           </NavLink>
           <button
             onClick={() => isLeaderboardVisible(true)}
-            className="flex items-center justify-center flex-1 max-w-64 border-2 border-blue-400 font-medium text-blue-500 rounded-lg py-2 px-8 text-center mt-6 transition-colors hover:border-blue-700 hover:text-blue-700 hover:bg-blue-100"
+            className="flex items-center justify-center flex-1 max-w-64 border-2 border-blue-400 font-medium text-blue-500 rounded-lg py-2 px-8 text-center mt-6 transition-colors hover:border-blue-700 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-950"
           >
             Tablica wyników
           </button>

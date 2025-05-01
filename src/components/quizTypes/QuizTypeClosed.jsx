@@ -132,7 +132,7 @@ export default function QuizTypeClosed(props) {
                       key={index}
                       onClick={() => confirmAndCheckAnswer(answer)}
                       id="answerBox"
-                      className={`flex items-center rounded-xl justify-center border-2 border-black h-[6rem] lg:w-[15rem] sm:w-screen select-none bg-white ${
+                      className={`flex items-center rounded-xl justify-center border-2 border-black h-[6rem] lg:w-[15rem] sm:w-screen select-none bg-white dark:bg-backgrounddark ${
                         isAnswered &&
                         answer.translations.pol.common ===
                           questions[questionIndex].translations.pol.common

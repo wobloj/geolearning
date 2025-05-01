@@ -14,6 +14,7 @@ import QuizTypeClosed from "../components/quizTypes/QuizTypeClosed";
 import QuizTypeOpen from "../components/quizTypes/QuizTypeOpen";
 import Loading from "../components/Loading";
 import Back from "../components/Back";
+import ButtonGreen from "../components/ButtonGreen";
 
 export default function Quiz() {
   const [startQuiz, setStartQuiz] = useState(false);
@@ -176,16 +177,16 @@ export default function Quiz() {
   };
 
   return (
-    <div className="font-monts bg-default bg-blue-100 bg-opacity-5 flex items-center flex-col h-screen relative">
+    <div className="flex items-center flex-col h-screen relative">
       <Back to={`/`} />
 
       {!startQuiz ? (
         <div className="flex flex-col gap-5 items-center justify-center h-screen">
-          <h1 className="text-6xl font-semibold text-blue-800">
+          <h1 className="text-6xl mb-8 font-semibold text-blue-800">
             {levelTitleState}
           </h1>
           {quizTypeText}
-          <p className="mb-20">{icon}</p>
+          <p className="mb-20 text-blue-400">{icon}</p>
           <div className="flex justify-start flex-col w-full items-center max-w-64">
             <label className="font-semibold" htmlFor="quiz">
               Typ quizu
@@ -217,12 +218,7 @@ export default function Quiz() {
             </select>
           </div>
 
-          <button
-            className="flex items-center justify-center font-medium mt-5 border-2 border-black rounded-[0.7rem] h-12 w-52 select-none transition-colors bg-white cursor-pointer hover:bg-blue-50 hover:border-blue-500 hover:text-blue-500"
-            onClick={handleStartQuiz}
-          >
-            Start
-          </button>
+          <ButtonGreen onClick={handleStartQuiz}>Start</ButtonGreen>
           {error && <p>{error}</p>}
         </div>
       ) : isLoading ? (

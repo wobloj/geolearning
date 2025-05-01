@@ -16,7 +16,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center font-monts bg-default bg-blue-100 bg-opacity-5 h-screen">
+    <div className="flex flex-col items-center justify-center h-screen">
       <Back to={"/login"} />
       <h2 className="text-3xl font-semibold">Przypomnienie hasła</h2>
       <p className="mt-4 w-[25%] text-center">

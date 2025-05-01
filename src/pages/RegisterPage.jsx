@@ -185,7 +185,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="font-monts bg-default bg-blue-100 bg-opacity-5 h-screen flex items-center flex-col relative">
+    <div className="h-screen flex items-center flex-col relative">
       <NavLink
         to={"/"}
         className="absolute left-5 top-5 flex justify-center items-center gap-2 transition-colors hover:text-red-700"
@@ -194,7 +194,10 @@ export default function RegisterPage() {
         Powrót
       </NavLink>
       <div className="flex flex-col items-center pb-24 pt-24 gap-2">
-        <FontAwesomeIcon className="w-10 h-10" icon={faEarthAmerica} />
+        <FontAwesomeIcon
+          className="w-10 h-10 text-blue-400"
+          icon={faEarthAmerica}
+        />
         <p className="text-4xl font-bold">Rejestracja</p>
       </div>
       <form className="flex flex-col items-center gap-10">
@@ -221,7 +224,7 @@ export default function RegisterPage() {
           id="username"
         />
         <input
-          className={`rounded-md text-center border-2 transition-colors ${
+          className={`rounded-md text-center border-2 transition-all ${
             correctPasswordValid ? "border-green-400" : "border-blue-400"
           }  w-80 h-10 focus:outline-none`}
           placeholder="hasło"
@@ -242,7 +245,7 @@ export default function RegisterPage() {
           id="password"
         />
         <input
-          className={`rounded-md text-center border-2 transition-colors ${
+          className={`rounded-md text-center border-2 transition-all ${
             correctPasswordValid ? "border-green-400" : "border-blue-400"
           }  w-80 h-10 focus:outline-none`}
           placeholder="powtórz hasło"
@@ -263,7 +266,7 @@ export default function RegisterPage() {
           id="repeatPassword"
         />
         <button
-          className="rounded-md py-3 px-8 bg-white border-2 border-blue-400 transition-colors font-medium hover:bg-blue-100"
+          className="rounded-md py-3 px-8 border-2 border-blue-400 transition-colors font-medium hover:border-blue-600"
           type="submit"
           onClick={onSubmit}
         >
@@ -276,7 +279,7 @@ export default function RegisterPage() {
         )}
       </form>
       <div
-        className={`flex flex-col items-center bg-white mt-10 text-sm border-[1px] border-blue-400 rounded-md p-5 ${
+        className={`flex flex-col items-center bg-backgroundlight dark:bg-backgrounddark mt-10 text-sm border-[1px] border-blue-400 rounded-md p-5 ${
           isVisiblePasswordVal ? "visible" : "invisible"
         }`}
       >

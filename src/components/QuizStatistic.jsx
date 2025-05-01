@@ -65,7 +65,7 @@ export default function QuizStatistic({
   return (
     <>
       <div className="flex flex-col justify-center h-full font-monts w-full items-center">
-        <div className=" border-2 rounded bg-white border-blue-500 p-6 w-[150%]">
+        <div className=" border-2 rounded bg-backgroundlight dark:bg-backgrounddark border-blue-500 p-6 w-[150%]">
           <div className="text-4xl text-center my-5">Wyniki</div>
           <div className="text-center">
             <p className="font-semibold text-xl">

@@ -96,7 +96,7 @@ export default function Leaderboard({
           ) : (
             <table className="text-center border-[1px] border-black">
               <thead>
-                <tr className="bg-white">
+                <tr className="bg-white dark:bg-backgrounddark">
                   <th className="px-5 border-[1px] border-black border-r-transparent">
                     Pozycja
                   </th>
@@ -112,7 +112,11 @@ export default function Leaderboard({
                 {leaderboardData.map((entry, index) => (
                   <tr
                     key={index}
-                    className={index % 2 === 0 ? "bg-white" : "bg-blue-200"}
+                    className={
+                      index % 2 === 0
+                        ? "bg-white dark:bg-backgrounddark"
+                        : "bg-blue-200 dark:bg-blue-400"
+                    }
                   >
                     <td>{index + 1}</td>
                     <td>{entry.username}</td>

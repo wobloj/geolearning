@@ -77,7 +77,7 @@ export default function CountriesList() {
 
   return (
     <>
-      <div className="transition bg-backgroundlight dark:bg-backgrounddark text-black dark:text-white min-h-screen pb-20 font-monts">
+      <div className="min-h-screen pb-20">
         <Header />
         <div className="flex flex-col items-center ">
           <Suspense fallback={<Loading />}>

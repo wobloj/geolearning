@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import { getUserData, getToLearn } from "../firebase/services";
 
-import avatar from "../assets/avatar-default.png";
+import avatar from "../assets/avatars/avatar-default.png";
 import Header from "../components/Header";
 import ToLearn from "../components/ToLearn";
 import ProfileDetails from "../components/ProfileDetails";
@@ -36,10 +36,10 @@ export default function Profile() {
   }, [username, email]);
 
   return (
-    <div className="bg-default font-monts min-h-screen">
+    <div className="min-h-screen">
       <Header />
       <div className="flex flex-row justify-start gap-10 mt-10 h-[40rem]">
-        <div className="border-2 border-blue-500 rounded-md ml-60 h-full w-96 bg-white text-center">
+        <div className="border-2 border-blue-500 rounded-md ml-60 h-full w-96 bg-backgroundlight dark:bg-backgrounddark text-center">
           <p className="font-semibold pt-4 pb-8 text-xl">Panel</p>
           <div className="flex flex-col items-center gap-3">
             <p
@@ -68,7 +68,7 @@ export default function Profile() {
             </p>
           </div>
         </div>
-        <div className="border-2 border-blue-500 px-8 py-4 rounded-md mr-60 h-full w-full bg-white ">
+        <div className="border-2 border-blue-500 px-8 py-4 rounded-md mr-60 h-full w-full bg-backgroundlight dark:bg-backgrounddark ">
           <p className="text-center font-semibold text-3xl mb-10">
             {titlePanel}
           </p>
